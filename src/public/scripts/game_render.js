@@ -1,11 +1,7 @@
-export default function createGameRender(gameInstance, canvasInstance, generationTextInstance){
-    const game = gameInstance
-    const canvas = canvasInstance
-    const generationText = generationTextInstance
+const floorY = 0
 
-    function start(){
-        setInterval(_run, 50)
-    }
+export default function gameRender(game, screen, generationText, requestAnimationFrame){
+    const canvas = screen.getContext('2d')
 
     function _run(){
         generationText.innerText = game.state.currentGeneration
@@ -16,11 +12,11 @@ export default function createGameRender(gameInstance, canvasInstance, generatio
     }
 
     function _cactusRender(cactus){
-        
+        context.fillStyle = 'black'
+        context.fillRect(cactus.x, floorY, cactus.body.width, cactus.body.height)
     }
 
-    return {
-        game,
-        start
-    }
+    requestAnimationFrame(() => {
+        gameRender(game, screen, generationText, requestAnimationFrame)
+    })
 }

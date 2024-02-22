@@ -1,16 +1,19 @@
 import createGame from '../shared/game.js'
 import gameEvents from '../shared/game_events.js'
-import createGameRender from './game_render.js'
+import gameRender from './game_render.js'
 
 const canvas = document.getElementById('screen')
 const generationText = document.getElementById('generation-span')
 
 const game = createGame()
-const gameRender = createGameRender(game, canvas, generationText)
 
-gameRender.start()
+gameRender(game, canvas, generationText, requestAnimationFrame)
 
 const socket = io()
+
+socket.on('connect', () => {
+    console.log(`Connected like: ${socket.id}`)
+})
 
 socket.on(gameEvents.server2client.setup, (state) => {
     console.log(gameEvents.server2client.setup, state)

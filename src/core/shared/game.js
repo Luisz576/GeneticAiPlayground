@@ -2,9 +2,10 @@ import createCactus from "./cactus.js"
 import gameEvents from "./game_events.js"
 
 const maxCactus = 1
-const timeToUpdateSpeed = 20
-const incrementSpeedValue = 10
+const timeToUpdateSpeed = 30
+const incrementSpeedValue = 1
 const initialSpeed = 10
+const maxSpeed = 400
 
 export default function createGame(clientSide = true){
     const observers = []
@@ -13,7 +14,7 @@ export default function createGame(clientSide = true){
     var _runnerId
     const _defaultState = {
         currentGeneration: 0,
-        gameSpeed: 0,
+        gameSpeed: initialSpeed,
         running: false,
         dinosaurs: {},
         cactus: {}
@@ -39,7 +40,13 @@ export default function createGame(clientSide = true){
                 _tryCreateCactus(100, 2)
             }
             _needDestroyCactus()
+
+            _updateDinoPopulation()
         }
+    }
+
+    function _updateDinoPopulation(){
+        // TODO: Dino logic
     }
 
     function _shouldUpdateGameSpeedTick(){
@@ -69,7 +76,7 @@ export default function createGame(clientSide = true){
             }
         }
         for(let c in toDelete){
-            delete state.cactus[c]
+            delete state.cactus[toDelete[c]]
         }
         if(toDelete.length > 0){
             updateCactus({
@@ -115,15 +122,15 @@ export default function createGame(clientSide = true){
     }
 
     function dinoJump(command){
-        const dinosaur = command.dinosaur
+        const dinosaurId = command.dinosaurId
 
-        if(dinosaur){
-            if(state.dinosaurs[dinosaur]){
-                state.dinosaurs[dinosaur].jumping = true
+        if(dinosaurId){
+            if(state.dinosaurs[dinosaurId]){
+                state.dinosaurs[dinosaurId].jumping = true
 
                 notifyAll({
                     type: gameEvents.server2client.dinoJump,
-                    dinosaur: command.dinosaur
+                    dinosaurId: dinosaurId
                 })
             }
         }
@@ -132,24 +139,24 @@ export default function createGame(clientSide = true){
     function updateGameSpeed(command){
         const speed = command.speed
         if(speed >= 0){
-            state.gameSpeed = speed
+            state.gameSpeed = Math.min(speed, maxSpeed)
 
             notifyAll({
                 type: gameEvents.server2client.gameSpeedUpdate,
-                speed: speed
+                speed: state.gameSpeed
             })
         }
     }
 
     function dinoDie(command){
-        const dinosaur = command.dinosaur
+        const dinosaurId = command.dinosaurId
 
-        if(dinosaur){
+        if(dinosaurId){
             // TODO:
 
             notifyAll({
                 type: gameEvents.server2client.dinoDie,
-                dinosaur: command.dinosaur
+                dinosaurId: command.dinosaurId
             })
         }
     }
