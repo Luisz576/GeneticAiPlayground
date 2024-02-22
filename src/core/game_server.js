@@ -5,38 +5,33 @@ import gameEvents from './shared/game_events.js'
 export function createGameServer(server){
     const sockets = new Server(server)
 
-    const game = createGame()
+    const game = createGame(false)
     game.addListener((command) => {
-        console.log(`> Emitting ${command.type}`)
+        console.log(`Emitting '${command.type}'`)
         sockets.emit(command.type, command)
     })
-    game.state.cactus = {
-        '334g34': {
-            x: 12,
-            height: 10
-        }
-    }
 
     sockets.on('connection', (socket) => {
         const listenerConnected = socket.id
         console.log(`Listener connected: ${listenerConnected}`)
-
         socket.emit(gameEvents.server2client.setup, game.state)
 
-        socket.on(gameEvents.client2server.startDinos, (command) => {
+        socket.on(gameEvents.client2server.startDinos, (_) => {
             if(!game.state.running){
                 game.start()
             }
         })
 
-        socket.on(gameEvents.client2server.stopDinos, (command) => {
-            game.setState({
-                running: false,
-                dinosaurs: {},
-                cactus: {}
-            })
+        socket.on(gameEvents.client2server.stopDinos, (_) => {
+            if(game.state.running){
+                game.resetGame()
 
-            socket.emit(gameEvents.server2client.setup, game.state)
+                socket.emit(gameEvents.server2client.setup, game.state)
+            }
+        })
+
+        socket.on(gameEvents.client2server.saveDinos, (_) => {
+            // TODO: save dinos
         })
     })
 }
