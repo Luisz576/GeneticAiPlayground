@@ -22,7 +22,6 @@ export default function createDinosaur(opacity, phenotype){
             // ch => cactusHeight
             // gs => gameSpeed
             // mptj => minimalPercentToJump
-            return false
             return phenotype.cd * cactusDistance + phenotype.ch * cactusHeight + phenotype.gs * gameSpeed > phenotype.mptj
         }
         return false

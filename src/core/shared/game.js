@@ -38,6 +38,16 @@ export default function createGame(clientSide = true, genetic = undefined){
             cactus: {}
         })
     }
+
+    var willUpdate = 0
+    function _fixCactusPosition(){
+        willUpdate++
+        if(willUpdate > 20){
+            updateCactus({
+                cactus: state.cactus
+            })
+        }
+    }
     
     function _run(){
         if(state.running){
@@ -50,7 +60,7 @@ export default function createGame(clientSide = true, genetic = undefined){
                     _tryCreateCactus(100, 2)
                 }
                 _needDestroyCactus()
-               
+               _fixCactusPosition()
                 _updateDinos()
             }
         }
@@ -86,7 +96,6 @@ export default function createGame(clientSide = true, genetic = undefined){
         const fc = _getFirstCactus()
         if(fc){
             res = fc.canKill(dino.state.x, dino.state.y, dino.state.body.width, dino.state.body.height)
-            console.log(fc.x, dino.state.x, dino.state.y, dino.state.body.width, dino.state.body.height, fc.canKill(dino.state.x, dino.state.y, dino.state.body.width, dino.state.body.height))
         }
         if(res){
             dinoDie({

@@ -16,7 +16,8 @@ export default function createCactus(isTall = 0){
 
     function canKill(x, y, width, height){
         const distanceCD = this.x - (x + width)
-        return distanceCD <= 0 //&& distanceCD >= -width
+        // TODO: height
+        return distanceCD <= 0 && distanceCD >= -width
     }
 
     return {
