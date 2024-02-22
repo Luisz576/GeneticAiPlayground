@@ -6,6 +6,7 @@ const timeToUpdateSpeed = 30
 const incrementSpeedValue = 1
 const initialSpeed = 10
 const maxSpeed = 400
+const jumpForce = 300 // ????
 
 export default function createGame(clientSide = true){
     const observers = []
@@ -33,6 +34,7 @@ export default function createGame(clientSide = true){
 
     function _run(){
         _updatePositions()
+        console.log('tick')
 
         if(!isClientSize){
             _shouldUpdateGameSpeedTick()

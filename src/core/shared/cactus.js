@@ -1,12 +1,12 @@
-const initialGameCactusPosition = 850
+const initialGameCactusPosition = 1600
 const cactusSize = {
     normal: {
-        width: 10,
-        height: 10
+        width: 50,
+        height: -80
     },
     tall: {
-        width: 10,
-        height: 15
+        width: 50,
+        height: -140
     }
 }
 
@@ -19,10 +19,11 @@ const cactusSize = {
  */
 export default function createCactus(isTall = 0){
     isTall = isTall == 0 ? 0 : isTall == 1 ? 1 : Math.floor(Math.random() * 2)
+    const body = isTall ? cactusSize.tall : cactusSize.normal
     return {
         id: (Date.now() + Math.floor(Math.random() * 100)).toString(),
-        x: initialGameCactusPosition,
+        x: initialGameCactusPosition + body.width,
         isTall: isTall,
-        body: isTall ? cactusSize.tall : cactusSize.normal
+        body: body
     }
 }

@@ -6,6 +6,7 @@ const canvas = document.getElementById('screen')
 const generationText = document.getElementById('generation-span')
 
 const game = createGame()
+game.start()
 
 gameRender(game, canvas, generationText, requestAnimationFrame)
 

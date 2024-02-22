@@ -1,9 +1,11 @@
-const floorY = 0
-
 export default function gameRender(game, screen, generationText, requestAnimationFrame){
-    const canvas = screen.getContext('2d')
+    const context = screen.getContext('2d')
+    const floorY = screen.height
 
     function _run(){
+        context.fillStyle = 'white'
+        context.clearRect(0, 0, screen.width, screen.height)
+
         generationText.innerText = game.state.currentGeneration
         // TODO: draw
         for(let c in game.state.cactus){
@@ -12,9 +14,11 @@ export default function gameRender(game, screen, generationText, requestAnimatio
     }
 
     function _cactusRender(cactus){
-        context.fillStyle = 'black'
+        context.fillStyle = 'green'
         context.fillRect(cactus.x, floorY, cactus.body.width, cactus.body.height)
     }
+
+    _run()
 
     requestAnimationFrame(() => {
         gameRender(game, screen, generationText, requestAnimationFrame)
