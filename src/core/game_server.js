@@ -2,18 +2,12 @@ import { Server } from 'socket.io'
 import createGame from './shared/game.js'
 import gameEvents from './shared/game_events.js'
 import createDinoGenetic from './dino_genetic.js'
+import initialDinoPopulation from './initial_dino_population.js'
 
 export function createGameServer(server){
     const sockets = new Server(server)
 
-    const dinoGenetic = createDinoGenetic([
-        {
-            cd: 1.,
-            ch: 1.,
-            gs: 1.,
-            mptj: 1.
-        }
-    ], 25)
+    const dinoGenetic = createDinoGenetic(initialDinoPopulation, 25)
 
     const game = createGame(false, dinoGenetic)
     game.addListener((command) => {
@@ -22,9 +16,16 @@ export function createGameServer(server){
     })
 
     sockets.on('connection', (socket) => {
+        function initialPackets(){
+            socket.emit(gameEvents.server2client.setup, {
+                state:  game.state
+            })
+        }
+
         const listenerConnected = socket.id
         console.log(`Listener connected: ${listenerConnected}`)
-        socket.emit(gameEvents.server2client.setup, game.state)
+        
+        initialPackets()
 
         socket.on(gameEvents.client2server.startDinos, (_) => {
             if(!game.state.running){
@@ -40,6 +41,11 @@ export function createGameServer(server){
 
         socket.on(gameEvents.client2server.saveDinos, (_) => {
             // TODO: save dinos
+            console.log(dinoGenetic.population())
+        })
+
+        socket.on(gameEvents.client2server.loadDinos, (_) => {
+            // TODO: load dinos
         })
     })
 }

@@ -2,7 +2,8 @@ const gameEvents = {
     client2server: {
         startDinos: 'start-dinos',
         stopDinos: 'stop-dinos',
-        saveDinos: 'save-dinos'
+        saveDinos: 'save-dinos',
+        loadDinos: 'load-dinos'
     },
     server2client: {
         setup: 'setup',

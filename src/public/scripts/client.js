@@ -19,6 +19,11 @@ socket.on('connect', () => {
 socket.on(gameEvents.server2client.setup, (command) => {
     console.log(gameEvents.server2client.setup, command)
     game.setState(command.state)
+    try{
+        game.setDinos(command.state.dinosaurs)
+    }catch(_){
+        console.error(_)
+    }
 })
 
 socket.on(gameEvents.server2client.dinoJump, (command) => {
@@ -71,5 +76,11 @@ document.getElementById("btn-stop-dinos").onclick = () => {
 document.getElementById("btn-save-dinos").onclick = () => {
     socket.emit(gameEvents.client2server.saveDinos, {
         type: gameEvents.client2server.saveDinos
+    })
+}
+
+document.getElementById("btn-load-dinos").onclick = () => {
+    socket.emit(gameEvents.client2server.loadDinos, {
+        type: gameEvents.client2server.loadDinos
     })
 }
