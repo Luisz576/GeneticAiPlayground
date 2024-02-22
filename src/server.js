@@ -11,7 +11,6 @@ const app = express()
 const server = http.createServer(app)
 
 app.use(cors())
-console.log(path.join(__dirname, './public'))
 
 app.use('/', express.static(path.join(__dirname, '/src/public')))
 app.use('/shared', express.static(path.join(__dirname, '/src/core/shared')))

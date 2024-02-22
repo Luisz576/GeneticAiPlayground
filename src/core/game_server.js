@@ -7,11 +7,10 @@ import initialDinoPopulation from './initial_dino_population.js'
 export function createGameServer(server){
     const sockets = new Server(server)
 
-    const dinoGenetic = createDinoGenetic(initialDinoPopulation, 25)
+    const dinoGenetic = createDinoGenetic(initialDinoPopulation, 20)
 
     const game = createGame(false, dinoGenetic)
     game.addListener((command) => {
-        console.log(`Emitting '${command.type}'`)
         sockets.emit(command.type, command)
     })
 

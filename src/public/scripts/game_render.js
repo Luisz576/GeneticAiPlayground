@@ -24,6 +24,7 @@ export default function gameRender(game, screen, generationText, requestAnimatio
     }
 
     function _dinoRender(dino){
+        // console.log(dino)
         context.fillStyle = getColor(dino.state.opacity)
         context.fillRect(dino.state.x, floorY + dino.state.y, dino.state.body.width, dino.state.body.height)
     }

@@ -4,8 +4,8 @@ const defaultDinoSize = {
     height: -120,
 }
 
-const gravitySpeed = 4
-const jumpForce = 300
+const gravitySpeed = -5
+const jumpForce = -50
 
 export function createDinosaurFromOther(dinosaur = createDinosaur()){
     const state = {
@@ -21,26 +21,26 @@ export function createDinosaurFromOther(dinosaur = createDinosaur()){
     }
 
     function _updateDinoJumping(){
-        if(this.state.jumping){
-            this.state.jumpForce -= gravitySpeed
-            this.state.y += this.state.jumpForce
-            this.state.y = Math.max(this.state.y, 0)
-            if(this.state.y == 0){
-                this.state.jumping = false
+        if(state.jumping){
+            state.jumpForce -= gravitySpeed
+            state.y += state.jumpForce
+            state.y = Math.min(state.y, 0)
+            if(state.y == 0){
+                state.jumping = false
             }
         }
     }
     
     function jump(){
-        if(!this.state.jumping){
-            this.state.jumping = true
-            this.state.jumpForce = jumpForce
+        if(!state.jumping){
+            state.jumping = true
+            state.jumpForce = jumpForce
         }
     }
     
     function kill(score){
-        this.state.score = score
-        this.state.alive = false
+        state.score = score
+        state.alive = false
     }
 
     return {
@@ -76,26 +76,26 @@ export default function createDinosaur(opacity, phenotype){
     }
 
     function _updateDinoJumping(){
-        if(this.state.jumping){
-            this.state.jumpForce -= gravitySpeed
-            this.state.y += this.state.jumpForce
-            this.state.y = Math.max(this.state.y, 0)
-            if(this.state.y == 0){
-                this.state.jumping = false
+        if(state.jumping){
+            state.jumpForce -= gravitySpeed
+            state.y += state.jumpForce
+            state.y = Math.min(state.y, 0)
+            if(state.y == 0){
+                state.jumping = false
             }
         }
     }
     
     function jump(){
-        if(!this.state.jumping){
-            this.state.jumping = true
-            this.state.jumpForce = jumpForce
+        if(!state.jumping){
+            state.jumping = true
+            state.jumpForce = jumpForce
         }
     }
     
     function kill(score){
-        this.state.score = score
-        this.state.alive = false
+        state.score = score
+        state.alive = false
     }
 
     return {

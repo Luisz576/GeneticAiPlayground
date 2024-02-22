@@ -20,7 +20,9 @@ socket.on(gameEvents.server2client.setup, (command) => {
     console.log(gameEvents.server2client.setup, command)
     game.setState(command.state)
     try{
-        game.setDinos(command.state.dinosaurs)
+        game.setDinos({
+            dinosaurs: command.state.dinosaurs
+        })
     }catch(_){
         console.error(_)
     }
