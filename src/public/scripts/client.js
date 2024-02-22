@@ -16,9 +16,9 @@ socket.on('connect', () => {
     console.log(`Connected like: ${socket.id}`)
 })
 
-socket.on(gameEvents.server2client.setup, (state) => {
-    console.log(gameEvents.server2client.setup, state)
-    game.setState(state)
+socket.on(gameEvents.server2client.setup, (command) => {
+    console.log(gameEvents.server2client.setup, command)
+    game.setState(command.state)
 })
 
 socket.on(gameEvents.server2client.dinoJump, (command) => {
@@ -36,6 +36,11 @@ socket.on(gameEvents.server2client.setDinos, (command) => {
     game.setDinos(command)
 })
 
+socket.on(gameEvents.server2client.resetGame, (command) => {
+    console.log(gameEvents.server2client.resetGame, command)
+    game.resetGame(command)
+})
+
 socket.on(gameEvents.server2client.setGeneration, (command) => {
     console.log(gameEvents.server2client.setGeneration, command)
     game.setGeneration(command)
@@ -47,7 +52,7 @@ socket.on(gameEvents.server2client.updateCactus, (command) => {
 })
 
 socket.on(gameEvents.server2client.gameSpeedUpdate, (command) => {
-    console.log(gameEvents.server2client.gameSpeedUpdate, command)
+    // console.log(gameEvents.server2client.gameSpeedUpdate, command)
     game.updateGameSpeed(command)
 })
 

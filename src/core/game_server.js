@@ -1,11 +1,21 @@
 import { Server } from 'socket.io'
 import createGame from './shared/game.js'
 import gameEvents from './shared/game_events.js'
+import createDinoGenetic from './dino_genetic.js'
 
 export function createGameServer(server){
     const sockets = new Server(server)
 
-    const game = createGame(false)
+    const dinoGenetic = createDinoGenetic([
+        {
+            cd: 1.,
+            ch: 1.,
+            gs: 1.,
+            mptj: 1.
+        }
+    ], 25)
+
+    const game = createGame(false, dinoGenetic)
     game.addListener((command) => {
         console.log(`Emitting '${command.type}'`)
         sockets.emit(command.type, command)
@@ -25,8 +35,6 @@ export function createGameServer(server){
         socket.on(gameEvents.client2server.stopDinos, (_) => {
             if(game.state.running){
                 game.resetGame()
-
-                socket.emit(gameEvents.server2client.setup, game.state)
             }
         })
 

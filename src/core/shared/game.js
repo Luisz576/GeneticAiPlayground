@@ -1,51 +1,142 @@
 import createCactus from "./cactus.js"
+import createDinosaur from "./dinosaur.js"
 import gameEvents from "./game_events.js"
 
 const maxCactus = 1
-const timeToUpdateSpeed = 30
+const timeToUpdateSpeed = 50
 const incrementSpeedValue = 1
-const initialSpeed = 10
-const maxSpeed = 400
+const initialSpeed = 15
+const maxSpeed = 80
 const jumpForce = 300 // ????
 
-export default function createGame(clientSide = true){
+export default function createGame(clientSide = true, genetic = undefined){
     const observers = []
-    const isClientSize = clientSide
+    const isClientSide = clientSide
     var updateSpeedCounter = 0
-    var _runnerId
+    var _runnerId = -1
     const state = {}
-    resetGame()
+    _resetState()
 
     function resetGame(){
         if(_runnerId){
             clearInterval(_runnerId)
+            _runnerId = -1
         }
+        _resetState()
+        notifyAll({
+            type: gameEvents.server2client.resetGame
+        })
+    }
+
+    function _resetState(){
         setState({
             currentGeneration: 0,
             gameSpeed: initialSpeed,
             running: false,
+            score: 0,
             dinosaurs: {},
             cactus: {}
         })
     }
 
     function _run(){
-        _updatePositions()
-        console.log('tick')
+        if(state.running){
+            _updatePositions()
 
-        if(!isClientSize){
-            _shouldUpdateGameSpeedTick()
-            if(Object.keys(state.cactus).length < maxCactus){
-                _tryCreateCactus(100, 2)
+            if(!isClientSide){
+                state.score += state.gameSpeed
+                _shouldUpdateGameSpeedTick()
+                if(Object.keys(state.cactus).length < maxCactus){
+                    _tryCreateCactus(100, 2)
+                }
+                _needDestroyCactus()
+
+                _updateDinos()
             }
-            _needDestroyCactus()
-
-            _updateDinoPopulation()
         }
     }
 
-    function _updateDinoPopulation(){
-        // TODO: Dino logic
+    function _updateDinos(){
+        var someoneAlive = false
+        for(let d in state.dinosaurs){
+            const dino = state.dinosaurs[d]
+            if(dino.state.alive && !_dinoWillDieAndKillIfWill(dino)){
+                someoneAlive = true
+                let cactusDistance
+                let cactusHeight
+                const fc = _getFirstCactus()
+                if(fc){
+                    cactusDistance = fc.x - dino.state.x
+                    cactusHeight = fc.body.height
+                }
+                if(dino.itWillJump(cactusDistance, cactusHeight, state.gameSpeed)){
+                    dinoJump({
+                        dinosaurId: dino.state.id
+                    })
+                }
+            }
+        }
+        if(!someoneAlive){
+            _repopulateDinos()
+        }
+    }
+
+    function _dinoWillDieAndKillIfWill(dino){
+        var res = false
+        const fc = _getFirstCactus()
+        if(fc){
+            res = fc.canKill(dino.state.x, dino.state.y, dino.state.body.width, dino.state.body.height)
+        }
+        if(res){
+            dinoDie({
+                dinosaurId: dino.state.id,
+                score: state.score
+            })
+        }
+        return res
+    }
+
+    function _repopulateDinos(){
+        // TODO: pega melhores dinos
+        const bestDinos = undefined
+        const running = state.running
+        const currentGeneration = state.currentGeneration
+        _resetState()
+
+        state.running = running
+        
+        _doRepopulateDinos(currentGeneration + 1, bestDinos) // <- passar os melhores dinos
+
+        notifyAll({
+            type: gameEvents.server2client.setup,
+            state: state
+        })
+    }
+
+    function _doRepopulateDinos(newGeneration, bestDinos){
+        if(isClientSide || genetic == undefined){
+            return
+        }
+        if(bestDinos){
+            genetic.evolve({
+                population: bestDinos
+            })
+        }
+        _spawnDinos()
+        setGeneration({
+            generation: newGeneration
+        })
+    }
+
+    function  _spawnDinos(){
+        const dinosPopulation = genetic.population()
+        for(let d in dinosPopulation){
+            const dino = createDinosaur(Math.random(), dinosPopulation[d])
+            state.dinosaurs[dino.state.id] = dino
+        }
+        setDinos({
+            dinosaurs: state.dinosaurs
+        })
     }
 
     function _shouldUpdateGameSpeedTick(){
@@ -84,9 +175,16 @@ export default function createGame(clientSide = true){
         }
     }
 
+    function _getFirstCactus(){
+        if(state && Object.keys(state.cactus).length > 0){
+            return state.cactus[Object.keys(state.cactus)[0]]
+        }
+        return undefined
+    }
+
     function _tryCreateCactus(r, c){
         const rand = Math.floor(Math.random() * r)
-        if(rand == 10){
+        if(rand > 90){
             const cactus = createCactus(c)
             state.cactus[cactus.id] = cactus
             updateCactus({
@@ -96,10 +194,12 @@ export default function createGame(clientSide = true){
     }
 
     function start(){
-        state.running = true
+        if(!clientSide){
+            _doRepopulateDinos(1)
+            state.running = true
+        }
 
         _runnerId = setInterval(_run, 50)
-
         notifyAll({
             type: gameEvents.server2client.setup,
             state: state
@@ -149,25 +249,29 @@ export default function createGame(clientSide = true){
 
     function dinoDie(command){
         const dinosaurId = command.dinosaurId
+        const score = command.score
 
         if(dinosaurId){
-            // TODO:
-
-            notifyAll({
-                type: gameEvents.server2client.dinoDie,
-                dinosaurId: command.dinosaurId
-            })
+            if(state.dinosaurs[dinosaurId].alive){
+                state.dinosaurs[dinosaurId].kill(score)
+                
+                notifyAll({
+                    type: gameEvents.server2client.dinoDie,
+                    dinosaurId: dinosaurId,
+                    score: score
+                })
+            }
         }
     }
 
     function setDinos(command){
         const dinosaurs = command.dinosaurs
         if(dinosaurs){
-            // TODO:
+            state.dinosaurs = dinosaurs
 
             notifyAll({
                 type: gameEvents.server2client.setDinos,
-                dinosaurs: command.dinosaurs
+                dinosaurs: state.dinosaurs
             })
         }
     }
@@ -180,7 +284,7 @@ export default function createGame(clientSide = true){
 
             notifyAll({
                 type: gameEvents.server2client.updateCactus,
-                cactus: command.cactus
+                cactus: state.cactus
             })
         }
     }
@@ -188,11 +292,11 @@ export default function createGame(clientSide = true){
     function setGeneration(command){
         const generation = command.generation
         if(generation > 0){
-            // TODO:
+            state.currentGeneration = generation
 
             notifyAll({
                 type: gameEvents.server2client.setGeneration,
-                generation: command.generation
+                generation: state.currentGeneration
             })
         }
     }

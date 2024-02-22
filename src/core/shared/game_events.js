@@ -11,7 +11,8 @@ const gameEvents = {
         setGeneration: 'set-generation',
         dinoJump: 'dino-jump',
         dinoDie: 'dino-die',
-        updateCactus: 'update-cactus'
+        updateCactus: 'update-cactus',
+        resetGame: 'reset-game'
     }
 }
 
