@@ -13,13 +13,6 @@ export default function createGame(clientSide = true){
     const isClientSize = clientSide
     var updateSpeedCounter = 0
     var _runnerId
-    const _defaultState = {
-        currentGeneration: 0,
-        gameSpeed: initialSpeed,
-        running: false,
-        dinosaurs: {},
-        cactus: {}
-    }
     const state = {}
     resetGame()
 
@@ -27,9 +20,13 @@ export default function createGame(clientSide = true){
         if(_runnerId){
             clearInterval(_runnerId)
         }
-        const newState = {}
-        Object.assign(newState, _defaultState)
-        setState(newState)
+        setState({
+            currentGeneration: 0,
+            gameSpeed: initialSpeed,
+            running: false,
+            dinosaurs: {},
+            cactus: {}
+        })
     }
 
     function _run(){
