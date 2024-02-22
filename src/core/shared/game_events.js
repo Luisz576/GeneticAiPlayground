@@ -7,7 +7,8 @@ const gameEvents = {
         setup: 'setup',
         setDinos: 'set-dinos',
         dinoJump: 'dino-jump',
-        dinoDie: 'dino-die'
+        dinoDie: 'dino-die',
+        updateCactus: 'update-cactus'
     }
 }
 

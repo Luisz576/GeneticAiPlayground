@@ -3,8 +3,26 @@ import gameEvents from "./game_events.js"
 export default function createGame(){
     const observers = []
     const state = {
+        running: false,
         dinosaurs: {},
         cactus: {}
+    }
+
+    function start(){
+        state = {
+            running: true,
+            dinosaurs: {},
+            cactus: {}
+        }
+
+        setInterval(() => {
+            // TODO: logic
+        }, 50)
+
+        notifyAll({
+            type: gameEvents.server2client.setup,
+            state: state
+        })
     }
     
     function addListener(observerFunction) {
@@ -54,19 +72,34 @@ export default function createGame(){
             // TODO:
 
             notifyAll({
-                type: gameEvents.server2client.dinoDie,
+                type: gameEvents.server2client.setDinos,
                 dinosaurs: command.dinosaur
             })
         }
     }
 
+    function updateCactus(command){
+        const cactus = command.cactus
+
+        if(cactus){
+            state.cactus = cactus
+
+            notifyAll({
+                type: gameEvents.server2client.updateCactus,
+                cactus: command.cactus
+            })
+        }
+    }
+
     return {
+        start,
         setState,
         addListener,
         
         dinoJump,
         dinoDie,
         setDinos,
+        updateCactus,
 
         state
     }

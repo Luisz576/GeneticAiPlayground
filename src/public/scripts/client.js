@@ -20,3 +20,7 @@ socket.on(gameEvents.server2client.dinoDie, (command) => {
 socket.on(gameEvents.server2client.setDinos, (command) => {
     game.setDinos(command)
 })
+
+socket.on(gameEvents.server2client.updateCactus, (command) => {
+    game.updateCactus(command)
+})
