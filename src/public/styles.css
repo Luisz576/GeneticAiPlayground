@@ -1,0 +1,12 @@
+.main{
+    display: flex;
+}
+
+#screen {
+    border: 10px solid #CCC;
+    /* image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    image-rendering: -moz-crisp-edges; */
+    width: 800px;
+    height: 500px;
+}
