@@ -32,7 +32,7 @@ socket.on(gameEvents.server2client.dinoDie, (command) => {
 })
 
 socket.on(gameEvents.server2client.setDinos, (command) => {
-    console.log(gameEvents.server2client.setDinos, command)
+    // console.log(gameEvents.server2client.setDinos, command)
     game.setDinos(command)
 })
 
@@ -42,7 +42,7 @@ socket.on(gameEvents.server2client.resetGame, (command) => {
 })
 
 socket.on(gameEvents.server2client.setGeneration, (command) => {
-    console.log(gameEvents.server2client.setGeneration, command)
+    // console.log(gameEvents.server2client.setGeneration, command)
     game.setGeneration(command)
 })
 

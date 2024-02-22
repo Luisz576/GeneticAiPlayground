@@ -38,7 +38,7 @@ export default function createGame(clientSide = true, genetic = undefined){
             cactus: {}
         })
     }
-
+    
     function _run(){
         if(state.running){
             _updatePositions()
@@ -50,7 +50,7 @@ export default function createGame(clientSide = true, genetic = undefined){
                     _tryCreateCactus(100, 2)
                 }
                 _needDestroyCactus()
-
+               
                 _updateDinos()
             }
         }
@@ -60,13 +60,13 @@ export default function createGame(clientSide = true, genetic = undefined){
         var someoneAlive = false
         for(let d in state.dinosaurs){
             const dino = state.dinosaurs[d]
-            if(dino.state.alive && !_dinoWillDieAndKillIfWill(dino)){
+            if(dino.state.alive && !_dinoWillDieAndKillIfItWill(dino)){
                 someoneAlive = true
                 let cactusDistance
                 let cactusHeight
                 const fc = _getFirstCactus()
                 if(fc){
-                    cactusDistance = fc.x - dino.state.x
+                    cactusDistance = fc.x - (dino.state.x + dino.state.body.width)
                     cactusHeight = fc.body.height
                 }
                 if(dino.itWillJump(cactusDistance, cactusHeight, state.gameSpeed)){
@@ -81,11 +81,12 @@ export default function createGame(clientSide = true, genetic = undefined){
         }
     }
 
-    function _dinoWillDieAndKillIfWill(dino){
+    function _dinoWillDieAndKillIfItWill(dino){
         var res = false
         const fc = _getFirstCactus()
         if(fc){
             res = fc.canKill(dino.state.x, dino.state.y, dino.state.body.width, dino.state.body.height)
+            console.log(fc.x, dino.state.x, dino.state.y, dino.state.body.width, dino.state.body.height, fc.canKill(dino.state.x, dino.state.y, dino.state.body.width, dino.state.body.height))
         }
         if(res){
             dinoDie({
