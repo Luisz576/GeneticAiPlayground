@@ -1,10 +1,10 @@
-import geneticAlgorithmConstructor from 'geneticalgorithm'
+import geneticAlgorithmConstructor from './lib/geneticalgorithm.js'
 
 // cd => cactusDistance
 // ch => cactusHeight
 // gs => gameSpeed
 // mptj => minimalPercentToJump
-export default function createDinoGenetic(initialPopulation, populationSize = 50){
+export default function createDinoGenetic(initialPopulation, populationSize){
     function mutationFunction(phenotype){
         phenotype.cd += calculateMutation();
         phenotype.ch += calculateMutation()
