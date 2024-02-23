@@ -1,7 +1,7 @@
 const dinoX = 50
 const defaultDinoSize = {
-    width: 80,
-    height: -120,
+    width: 120,
+    height: -180,
 }
 const gravitySpeed = -8
 const jumpForce = -90

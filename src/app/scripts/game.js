@@ -5,13 +5,14 @@ import initialDinoPopulation from './initial_dino_population.js'
 import createGameRender from "./game_render.js"
 import phenotypeComparer from "./phenotype_comparer.js"
 
-const initialSpeed = 10
-const maxSpeed = 140
-const defaultPenality = 1000
+const initialSpeed = 20
+const maxSpeed = 200
+const defaultPenality = 10000
 const maxCactus = 1
-const timeToUpdateSpeed = 20
-const incrementSpeedValue = 2
+const timeToUpdateSpeed = 25
+const incrementSpeedValue = 5
 const penalityReduction = 50
+const screenSize = 2400
 
 export default function createGame(screen, generationText, aliveText, gameTicks = 20){
     const state = {}
@@ -22,7 +23,7 @@ export default function createGame(screen, generationText, aliveText, gameTicks 
                 return dino.state.score
             }
         }
-        return -1000
+        return -defaultPenality
     }
 
     var genetic = createDinoGenetic(initialDinoPopulation, 10, callbackScore)
@@ -61,6 +62,10 @@ export default function createGame(screen, generationText, aliveText, gameTicks 
         allowOneMoreTick = true
     }
 
+    function increaseSpeed(speed){
+        state.gameSpeed += speed
+    }
+
     function _resetState(){
         setState({
             currentGeneration: 0,
@@ -83,10 +88,10 @@ export default function createGame(screen, generationText, aliveText, gameTicks 
         if(state.running || allowOneMoreTick){
             allowOneMoreTick = false
             _updatePositions()
-            state.score += state.gameSpeed
+            state.score++
             _shouldUpdateGameSpeedTick()
             if(Object.keys(state.cactus).length < maxCactus){
-                _tryCreateCactus(100, 0)
+                _tryCreateCactus(90, 80, 0)
             }
             _needDestroyCactus()
             _updateDinos()
@@ -204,10 +209,10 @@ export default function createGame(screen, generationText, aliveText, gameTicks 
         return state.score - state.penality - dino.state.y
     }
 
-    function _tryCreateCactus(r, c){
+    function _tryCreateCactus(r, mr, c){
         const rand = Math.floor(Math.random() * r)
-        if(rand > 90){
-            const cactus = createCactus(c)
+        if(rand > mr){
+            const cactus = createCactus(screenSize, c)
             state.cactus[cactus.id] = cactus
         }
     }
@@ -229,8 +234,8 @@ export default function createGame(screen, generationText, aliveText, gameTicks 
     }
 
     function updateGameSpeed(speed){
-        if(speed >= 0){
-            state.gameSpeed = Math.min(speed, maxSpeed)
+        if(speed >= 0 && maxSpeed >= speed){
+            state.gameSpeed = speed
         }
     }
 
@@ -255,6 +260,7 @@ export default function createGame(screen, generationText, aliveText, gameTicks 
         pause,
         nextTick,
         aliveDinos,
+        increaseSpeed,
         getGenetic,
         state,
         _runnerId

@@ -1,20 +1,19 @@
-const initialGameCactusPosition = 1600
 const cactusSize = [
     {
-        width: 50,
-        height: -80
+        width: 75,
+        height: -120
     },
     {
-        width: 50,
-        height: -140
+        width: 75,
+        height: -210
     },
     {
-        width: 50,
-        height: -200
+        width: 75,
+        height: -300
     }
 ]
 
-export default function createCactus(type = 0){
+export default function createCactus(initialPosition, type = 0){
     const body = selectCactusBody(type)
 
     function selectCactusBody(type){
@@ -28,7 +27,8 @@ export default function createCactus(type = 0){
     function canKill(x, y, width, height){
         const distanceCD = this.x - (x + width)
         // TODO: ajustar formula
-        if(distanceCD <= 0 && distanceCD >= -width && (y + height) >= this.body.height){
+        const targetFoot = (y + height)
+        if(distanceCD <= 0 && distanceCD >= -width && targetFoot >= this.body.height){
             return true
         }
         return false
@@ -36,7 +36,7 @@ export default function createCactus(type = 0){
 
     return {
         id: (Date.now() + Math.floor(Math.random() * 100)).toString(),
-        x: initialGameCactusPosition + body.width,
+        x: initialPosition + body.width,
         body: body,
         canKill
     }

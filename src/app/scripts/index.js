@@ -30,3 +30,7 @@ document.getElementById("btn-load-dinos").onclick = () => {
 document.getElementById("btn-next-tick-dinos").onclick = () => {
     game.nextTick()
 }
+
+document.getElementById("btn-increase-speed-dinos").onclick = () => {
+    game.increaseSpeed(2)
+}
