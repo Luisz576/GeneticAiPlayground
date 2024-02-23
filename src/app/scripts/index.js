@@ -4,7 +4,7 @@ const canvas = document.getElementById('screen')
 const generationText = document.getElementById('generation-span')
 const aliveText = document.getElementById('alive-span')
 
-const game = createGame(canvas, generationText, aliveText)
+const game = createGame(canvas, generationText, aliveText, 20, 50)
 
 document.getElementById("btn-start-dinos").onclick = () => {
     game.start()

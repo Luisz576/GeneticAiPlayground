@@ -1,19 +1,18 @@
-const dinoX = 50
 const defaultDinoSize = {
     width: 120,
     height: -180,
 }
-const gravitySpeed = -8
-const jumpForce = -90
+const gravitySpeed = -10
+const jumpForce = -110
 
-export default function createDinosaur(id, opacity, phenotype){
+export default function createDinosaur(id, x, opacity, phenotype){
     const state = {
         id: id != undefined ? id : (Date.now() + Math.floor(Math.random() * 100)).toString(),
         jumping: false,
         jumpForce: 0,
         opacity: opacity,
         y: 0,
-        x: dinoX,
+        x: x,
         alive: true,
         phenotype: phenotype,
         score: 0,

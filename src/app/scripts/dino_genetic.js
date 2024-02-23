@@ -6,15 +6,15 @@ import geneticAlgorithmConstructor from './lib/geneticalgorithm.js'
 // mptj => minimalPercentToJump
 export default function createDinoGenetic(initialPopulation, populationSize, callbackScore){
     function mutationFunction(phenotype){
-        phenotype.cd += calculateMutation();
-        phenotype.ch += calculateMutation()
-        phenotype.gs += calculateMutation()
-        phenotype.mptj += 10 * calculateMutation()
+        phenotype.cd += 2 * calculateBaseMutation();
+        phenotype.ch += 2 * calculateBaseMutation()
+        phenotype.gs += 2 * calculateBaseMutation()
+        phenotype.mptj += 2 * 10 * calculateBaseMutation()
         return phenotype
     }
 
-    function calculateMutation(){
-        return 3*(Math.random()*2 - 1)*(Math.random()*2 - 1)*(Math.random()*2 - 1)
+    function calculateBaseMutation(){
+        return (Math.random()*2 - 1) * (Math.random()*2 - 1) * (Math.random()*2 - 1)
     }
 
     function crossoverFunction(a, b){
@@ -54,7 +54,13 @@ export default function createDinoGenetic(initialPopulation, populationSize, cal
         const aScore = fitnessFunction(a)
         const bScore = fitnessFunction(b)
         
-        if(aScore > 0 && bScore < 0) return Math.floor(Math.random() * 10) = 1
+        if(aScore > bScore){
+            if(bScore > 0 && ((aScore / bScore) < 2)){
+                return Math.random() > 0.7
+            }
+            return true
+        }
+        if(aScore > 0 && bScore > 0) return Math.random() > 0.8
 
         return aScore - bScore
     }

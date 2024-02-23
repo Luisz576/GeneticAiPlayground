@@ -9,12 +9,14 @@ const initialSpeed = 20
 const maxSpeed = 200
 const defaultPenality = 10000
 const maxCactus = 1
-const timeToUpdateSpeed = 25
+const timeToUpdateSpeed = 35
 const incrementSpeedValue = 5
 const penalityReduction = 50
 const screenSize = 2400
+const dinoBaseX = 40
+const dinoSpawnDistanceRange = 150
 
-export default function createGame(screen, generationText, aliveText, gameTicks = 20){
+export default function createGame(screen, generationText, aliveText, gameTicks = 20, populationSize = 20){
     const state = {}
     function callbackScore(phenotype){
         for(let d in state.dinosaurs){
@@ -26,7 +28,7 @@ export default function createGame(screen, generationText, aliveText, gameTicks 
         return -defaultPenality
     }
 
-    var genetic = createDinoGenetic(initialDinoPopulation, 10, callbackScore)
+    var genetic = createDinoGenetic(initialDinoPopulation, populationSize, callbackScore)
     genetic.evolve()
     const render = createGameRender(screen, generationText, aliveText)
     var _runnerId = setInterval(updateTick, 1000/gameTicks)
@@ -134,7 +136,7 @@ export default function createGame(screen, generationText, aliveText, gameTicks 
     function  _spawnDinos(){
         const dinosPopulation = genetic.population()
         for(let d in dinosPopulation){
-            const dino = createDinosaur(d, Math.random(), dinosPopulation[d])
+            const dino = createDinosaur(d, dinoBaseX + Math.floor(Math.random() * dinoSpawnDistanceRange), Math.random(), dinosPopulation[d])
             dinosPopulation[d].id = dino.state.id
             state.dinosaurs[dino.state.id] = dino
         }
