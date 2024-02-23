@@ -27,9 +27,11 @@ export default function createCactus(initialPosition, type = 0){
     function canKill(x, y, width, height){
         const distanceCD = this.x - (x + width)
         // TODO: ajustar formula
-        const targetFoot = (y + height)
-        if(distanceCD <= 0 && distanceCD >= -width && targetFoot >= this.body.height){
-            return true
+        if(distanceCD <= 0 && distanceCD >= -width){
+            const targetFoot = (y + height)
+            if(targetFoot >= this.body.height){
+                return true
+            }
         }
         return false
     }
