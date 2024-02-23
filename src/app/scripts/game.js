@@ -86,7 +86,7 @@ export default function createGame(screen, generationText, aliveText, gameTicks 
             state.score += state.gameSpeed
             _shouldUpdateGameSpeedTick()
             if(Object.keys(state.cactus).length < maxCactus){
-                _tryCreateCactus(100, 2)
+                _tryCreateCactus(100, 0)
             }
             _needDestroyCactus()
             _updateDinos()
@@ -141,8 +141,6 @@ export default function createGame(screen, generationText, aliveText, gameTicks 
             const dino = state.dinosaurs[d]
 
             if(dino.state.alive && !_dinoWillDieAndKillIfItWill(dino)){
-                someoneAlive = true
-
                 dino.updateDinoJumping()
 
                 let cactusDistance

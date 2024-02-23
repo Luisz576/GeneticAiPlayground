@@ -3,8 +3,8 @@ const defaultDinoSize = {
     width: 80,
     height: -120,
 }
-const gravitySpeed = -5
-const jumpForce = -50
+const gravitySpeed = -8
+const jumpForce = -90
 
 export default function createDinosaur(id, opacity, phenotype){
     const state = {
