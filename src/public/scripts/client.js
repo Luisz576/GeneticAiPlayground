@@ -4,11 +4,12 @@ import gameRender from './game_render.js'
 
 const canvas = document.getElementById('screen')
 const generationText = document.getElementById('generation-span')
+const aliveText = document.getElementById('alive-span')
 
 const game = createGame()
 game.start()
 
-gameRender(game, canvas, generationText, requestAnimationFrame)
+gameRender(game, canvas, generationText, aliveText, requestAnimationFrame)
 
 const socket = io()
 
@@ -17,7 +18,7 @@ socket.on('connect', () => {
 })
 
 socket.on(gameEvents.server2client.setup, (command) => {
-    console.log(gameEvents.server2client.setup, command)
+    //console.log(gameEvents.server2client.setup, command)
     game.setState(command.state)
     try{
         game.setDinos({
@@ -29,12 +30,12 @@ socket.on(gameEvents.server2client.setup, (command) => {
 })
 
 socket.on(gameEvents.server2client.dinoJump, (command) => {
-    console.log(gameEvents.server2client.dinoJump, command)
+    // console.log(gameEvents.server2client.dinoJump, command)
     game.dinoJump(command)
 })
 
 socket.on(gameEvents.server2client.dinoDie, (command) => {
-    console.log(gameEvents.server2client.dinoDie, command)
+    // console.log(gameEvents.server2client.dinoDie, command)
     game.dinoDie(command)
 })
 
@@ -44,7 +45,7 @@ socket.on(gameEvents.server2client.setDinos, (command) => {
 })
 
 socket.on(gameEvents.server2client.resetGame, (command) => {
-    console.log(gameEvents.server2client.resetGame, command)
+    // console.log(gameEvents.server2client.resetGame, command)
     game.resetGame(command)
 })
 
@@ -54,7 +55,7 @@ socket.on(gameEvents.server2client.setGeneration, (command) => {
 })
 
 socket.on(gameEvents.server2client.updateCactus, (command) => {
-    console.log(gameEvents.server2client.updateCactus, command)
+    // console.log(gameEvents.server2client.updateCactus, command)
     game.updateCactus(command)
 })
 
@@ -85,4 +86,5 @@ document.getElementById("btn-load-dinos").onclick = () => {
     socket.emit(gameEvents.client2server.loadDinos, {
         type: gameEvents.client2server.loadDinos
     })
+    console.log(game.scoreManager)
 }

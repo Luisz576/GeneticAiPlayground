@@ -37,23 +37,17 @@ export function createDinosaurFromOther(dinosaur = createDinosaur()){
             state.jumpForce = jumpForce
         }
     }
-    
-    function kill(score){
-        state.score = score
-        state.alive = false
-    }
 
     return {
-        kill,
         _updateDinoJumping,
         jump,
         state
     }
 }
 
-export default function createDinosaur(opacity, phenotype){
+export default function createDinosaur(id, opacity, phenotype){
     const state = {
-        id: (Date.now() + Math.floor(Math.random() * 100)).toString(),
+        id: id != undefined ? id : (Date.now() + Math.floor(Math.random() * 100)).toString(),
         jumping: false,
         jumpForce: 0,
         opacity: opacity,
@@ -92,15 +86,9 @@ export default function createDinosaur(opacity, phenotype){
             state.jumpForce = jumpForce
         }
     }
-    
-    function kill(score){
-        state.score = score
-        state.alive = false
-    }
 
     return {
         state,
-        kill,
         _updateDinoJumping,
         jump,
         itWillJump

@@ -17,6 +17,4 @@ app.use('/shared', express.static(path.join(__dirname, '/src/core/shared')))
 
 createGameServer(server)
 
-server.listen(port, () => {
-    console.log(`> Server listening on port: ${port}`)
-})
+server.listen(port)

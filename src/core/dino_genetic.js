@@ -5,6 +5,10 @@ import geneticAlgorithmConstructor from 'geneticalgorithm'
 // gs => gameSpeed
 // mptj => minimalPercentToJump
 export default function createDinoGenetic(initialPopulation, populationSize = 50){
+    const scoreManager = {
+        instance: null
+    }
+    
     function mutationFunction(phenotype){
         phenotype.cd += calculateMutation();
         phenotype.ch += calculateMutation()
@@ -47,7 +51,11 @@ export default function createDinoGenetic(initialPopulation, populationSize = 50
     }
 
     function fitnessFunction(phenotype){
-        return 0
+        if(scoreManager.instance == null){
+            return -1000
+        }
+        //console.log("fitnessFunction", scoreManager.instance.get(phenotype))
+        return scoreManager.instance.get(phenotype)
     }
 
     function doesABeatBFunction(a, b){
@@ -68,5 +76,8 @@ export default function createDinoGenetic(initialPopulation, populationSize = 50
         populationSize: populationSize
     });
 
-    return g
+    return {
+        g,
+        scoreManager
+    }
 }

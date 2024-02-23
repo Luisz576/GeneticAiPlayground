@@ -1,4 +1,4 @@
-export default function gameRender(game, screen, generationText, requestAnimationFrame){
+export default function gameRender(game, screen, generationText, aliveText, requestAnimationFrame){
     const context = screen.getContext('2d')
     const floorY = screen.height
 
@@ -7,6 +7,7 @@ export default function gameRender(game, screen, generationText, requestAnimatio
         context.clearRect(0, 0, screen.width, screen.height)
 
         generationText.innerText = game.state.currentGeneration
+        aliveText.innerText = game.aliveDinos()
 
         for(let c in game.state.cactus){
             _cactusRender(game.state.cactus[c])
@@ -38,6 +39,6 @@ export default function gameRender(game, screen, generationText, requestAnimatio
     _run()
 
     requestAnimationFrame(() => {
-        gameRender(game, screen, generationText, requestAnimationFrame)
+        gameRender(game, screen, generationText, aliveText, requestAnimationFrame)
     })
 }

@@ -1,24 +1,5 @@
 const initialDinoPopulation = [
-    createDefault(),
-    createDefault(),
-    createDefault(),
-    createDefault(),
-    createDefault(),
-    createDefault(),
-    createDefault(),
-    createDefault(),
-    createDefault(),
-    createDefault(),
-    createDefault(),
-    createDefault(),
-    createDefault(),
-    createDefault(),
-    createDefault(),
-    createDefault(),
-    createDefault(),
-    createDefault(),
-    createDefault(),
-    createDefault(),
+    createDefault()
 ]
 
 function createDefault(){

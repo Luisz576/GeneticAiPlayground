@@ -1,10 +1,11 @@
+import createScoreManager from "./score_manager.js"
 import createCactus from "./cactus.js"
 import createDinosaur, { createDinosaurFromOther } from "./dinosaur.js"
 import gameEvents from "./game_events.js"
 
 const maxCactus = 1
-const timeToUpdateSpeed = 50
-const incrementSpeedValue = 1
+const timeToUpdateSpeed = 20
+const incrementSpeedValue = 2
 const initialSpeed = 15
 const maxSpeed = 80
 const defaultPenality = 1000
@@ -16,6 +17,7 @@ export default function createGame(clientSide = true, genetic = undefined){
     var updateSpeedCounter = 0
     var _runnerId = -1
     const state = {}
+    const scoreManager = createScoreManager()
     _resetState()
 
     function resetGame(){
@@ -29,7 +31,7 @@ export default function createGame(clientSide = true, genetic = undefined){
         })
     }
 
-    function _resetState(){
+    function _resetState(protectScore = false){
         setState({
             currentGeneration: 0,
             gameSpeed: initialSpeed,
@@ -39,12 +41,15 @@ export default function createGame(clientSide = true, genetic = undefined){
             dinosaurs: {},
             cactus: {}
         })
+        if(!protectScore){
+            scoreManager.clear()
+        }
     }
 
     var willUpdate = 0
     function _fixPositions(){
         willUpdate++
-        if(willUpdate > 10){
+        if(willUpdate > 20){
             updateCactus({
                 cactus: state.cactus
             })
@@ -119,18 +124,20 @@ export default function createGame(clientSide = true, genetic = undefined){
     }
 
     function _repopulateDinos(){
-        // TODO: pega melhores dinos
         if(!genetic){
             throw "Server Side need have 'genetic'"
+        }
+        for(let d in state.dinosaurs){
+            scoreManager.set(genetic.population()[d], state.dinosaurs[d].state.score)
         }
         const bestDinos = genetic.best()
         const running = state.running
         const currentGeneration = state.currentGeneration
-        _resetState()
+        _resetState(true)
 
         state.running = running
         
-        _doRepopulateDinos(currentGeneration + 1, bestDinos) // <- passar os melhores dinos
+        _doRepopulateDinos(currentGeneration + 1, bestDinos)
 
         _stateNotify()
     }
@@ -162,7 +169,8 @@ export default function createGame(clientSide = true, genetic = undefined){
     function  _spawnDinos(){
         const dinosPopulation = genetic.population()
         for(let d in dinosPopulation){
-            const dino = createDinosaur(Math.random(), dinosPopulation[d])
+            const dino = createDinosaur(d, Math.random(), dinosPopulation[d])
+            dinosPopulation[d].id = dino.state.id
             state.dinosaurs[dino.state.id] = dino
         }
         setDinos({
@@ -282,7 +290,9 @@ export default function createGame(clientSide = true, genetic = undefined){
 
         if(dinosaurId){
             if(state.dinosaurs[dinosaurId].alive){
-                state.dinosaurs[dinosaurId].kill(score - penality)
+                console.log('dino Die: ', score - penality)
+                state.dinosaurs[dinosaurId].state.score = score - penality
+                state.dinosaurs[dinosaurId].state.alive = false
                 
                 notifyAll({
                     type: gameEvents.server2client.dinoDie,
@@ -301,6 +311,7 @@ export default function createGame(clientSide = true, genetic = undefined){
                     const dino = createDinosaurFromOther(dinosaurs[d])
                     state.dinosaurs[dino.state.id] = dino
                 }
+                console.log('update', state.dinosaurs)
             }else{
                 state.dinosaurs = dinosaurs
             }
@@ -337,11 +348,23 @@ export default function createGame(clientSide = true, genetic = undefined){
         }
     }
 
+    function aliveDinos(){
+        let counter = 0
+        for(let d in state.dinosaurs){
+            if(state.dinosaurs[d].state.alive){
+                counter++
+            }
+        }
+        return counter
+    }
+
     return {
         start,
         setState,
         resetGame,
         addListener,
+
+        aliveDinos,
         
         dinoJump,
         dinoDie,
@@ -350,6 +373,7 @@ export default function createGame(clientSide = true, genetic = undefined){
         updateCactus,
         setGeneration,
 
+        scoreManager,
         state
     }
 }
