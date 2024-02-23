@@ -3,9 +3,10 @@ import createCactus from './cactus.js'
 import createDinoGenetic from "./dino_genetic.js"
 import initialDinoPopulation from './initial_dino_population.js'
 import createGameRender from "./game_render.js"
+import phenotypeComparer from "./phenotype_comparer.js"
 
-const initialSpeed = 15
-const maxSpeed = 10
+const initialSpeed = 10
+const maxSpeed = 140
 const defaultPenality = 1000
 const maxCactus = 1
 const timeToUpdateSpeed = 20
@@ -13,14 +14,36 @@ const incrementSpeedValue = 2
 const penalityReduction = 50
 
 export default function createGame(screen, generationText, aliveText, gameTicks = 20){
-    const genetic = createDinoGenetic(initialDinoPopulation, 10)
+    const state = {}
+    function callbackScore(phenotype){
+        for(let d in state.dinosaurs){
+            const dino = state.dinosaurs[d]
+            if(phenotypeComparer(phenotype, dino.state.phenotype)){
+                return dino.state.score
+            }
+        }
+        return -1000
+    }
+
+    var genetic = createDinoGenetic(initialDinoPopulation, 10, callbackScore)
     genetic.evolve()
     const render = createGameRender(screen, generationText, aliveText)
     var _runnerId = setInterval(updateTick, 1000/gameTicks)
-    const state = {}
     _resetState()
 
+    function loadDinos(dinoPopulation){
+        stop()
+        genetic = genetic.clone({
+            population: dinoPopulation
+        })
+        genetic.evolve()
+    }
+
     function stop(){
+        genetic = genetic.clone({
+            population: initialDinoPopulation
+        })
+        genetic.evolve()
         _resetState()
     }
     function start(){
@@ -114,7 +137,6 @@ export default function createGame(screen, generationText, aliveText, gameTicks 
 
     var waitToContinueAfterRepopulate = 0
     function _updateDinos(){
-        var someoneAlive = false
         for(let d in state.dinosaurs){
             const dino = state.dinosaurs[d]
 
@@ -172,11 +194,16 @@ export default function createGame(screen, generationText, aliveText, gameTicks 
         const fc = _getFirstCactus()
         if(fc != undefined){
             if(fc.canKill(dino.state.x, dino.state.y, dino.state.body.width, dino.state.body.height)){
-                dino.kill(state.score - state.penality)
+                dino.kill(giveDinoScore(dino))
+                console.error(callbackScore(dino.state.phenotype))
                 return true
             }
         }
         return false
+    }
+
+    function giveDinoScore(dino){
+        return state.score - state.penality - dino.state.y
     }
 
     function _tryCreateCactus(r, c){
@@ -219,12 +246,18 @@ export default function createGame(screen, generationText, aliveText, gameTicks 
         return counter
     }
 
+    function getGenetic(){
+        return genetic
+    }
+
     return {
         start,
         stop,
+        loadDinos,
         pause,
         nextTick,
         aliveDinos,
+        getGenetic,
         state,
         _runnerId
     }

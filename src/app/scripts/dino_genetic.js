@@ -4,7 +4,7 @@ import geneticAlgorithmConstructor from './lib/geneticalgorithm.js'
 // ch => cactusHeight
 // gs => gameSpeed
 // mptj => minimalPercentToJump
-export default function createDinoGenetic(initialPopulation, populationSize){
+export default function createDinoGenetic(initialPopulation, populationSize, callbackScore){
     function mutationFunction(phenotype){
         phenotype.cd += calculateMutation();
         phenotype.ch += calculateMutation()
@@ -47,7 +47,7 @@ export default function createDinoGenetic(initialPopulation, populationSize){
     }
 
     function fitnessFunction(phenotype){
-        return -1000
+        return callbackScore(phenotype)
     }
 
     function doesABeatBFunction(a, b){

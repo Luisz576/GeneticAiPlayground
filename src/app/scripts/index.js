@@ -20,6 +20,7 @@ document.getElementById("btn-pause-dinos").onclick = () => {
 
 document.getElementById("btn-save-dinos").onclick = () => {
     // TODO
+    console.log(game.getGenetic().population())
 }
 
 document.getElementById("btn-load-dinos").onclick = () => {

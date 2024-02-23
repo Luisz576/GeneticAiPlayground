@@ -15,6 +15,7 @@ export default function createDinosaur(id, opacity, phenotype){
         y: 0,
         x: dinoX,
         alive: true,
+        phenotype: phenotype,
         score: 0,
         body: Object.assign({}, defaultDinoSize)
     }

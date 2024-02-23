@@ -8,7 +8,6 @@ function createDefault(){
         ch: Math.random() * 5,
         gs: Math.random() * 5,
         mptj: Math.random() * 1000,
-        score: -1000,
     }
 }
 
