@@ -6,7 +6,7 @@ import geneticAlgorithmConstructor from './lib/geneticalgorithm.js'
 // mptj => minimalPercentToJump
 export default function createDinoGenetic(initialPopulation, populationSize, callbackScore){
     function mutationFunction(phenotype){
-        phenotype.cd += 2 * calculateBaseMutation();
+        phenotype.cd += 2 * calculateBaseMutation()
         phenotype.ch += 2 * calculateBaseMutation()
         phenotype.gs += 2 * calculateBaseMutation()
         phenotype.mptj += 2 * 10 * calculateBaseMutation()

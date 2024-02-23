@@ -1,4 +1,5 @@
 import createGame from "./game.js"
+import { downloadFile, loadFile, requestFile } from './file_manager.js'
 
 const canvas = document.getElementById('screen')
 const generationText = document.getElementById('generation-span')
@@ -19,12 +20,31 @@ document.getElementById("btn-pause-dinos").onclick = () => {
 }
 
 document.getElementById("btn-save-dinos").onclick = () => {
-    // TODO
-    console.log(game.getGenetic().population())
+    downloadFile({
+        generation: game.getGeneration(),
+        dinos: game.getGenetic().population()
+    })
 }
 
 document.getElementById("btn-load-dinos").onclick = () => {
-    // TOOD
+    requestFile((file) => {
+        loadFile(file, (data) => {
+            if(data
+                && data['generation'] != undefined
+                && data['dinos'] != undefined
+                && Array.isArray(data['dinos'])){
+                if(game.getGenetic().config().populationSize == data['dinos'].length){
+                    game.loadDinos(data['generation'], data['dinos'])
+                }else{
+                    alert("game.populationSize != dinos.size")
+                    console.error("game.populationSize != dinos.size")
+                }
+            }else{
+                alert("Invalid data!")
+                console.error("Invalid data!")
+            }
+        })
+    })
 }
 
 document.getElementById("btn-next-tick-dinos").onclick = () => {

@@ -6,11 +6,11 @@ import createGameRender from "./game_render.js"
 import phenotypeComparer from "./phenotype_comparer.js"
 
 const initialSpeed = 20
-const maxSpeed = 200
+const maxSpeed = 250
 const defaultPenality = 10000
 const maxCactus = 1
 const timeToUpdateSpeed = 35
-const incrementSpeedValue = 5
+const incrementSpeedValue = 6
 const penalityReduction = 50
 const screenSize = 2400
 const dinoBaseX = 40
@@ -33,9 +33,12 @@ export default function createGame(screen, generationText, aliveText, gameTicks 
     const render = createGameRender(screen, generationText, aliveText)
     var _runnerId = setInterval(updateTick, 1000/gameTicks)
     _resetState()
+    var initGeneration = 1
 
-    function loadDinos(dinoPopulation){
+    function loadDinos(generation, dinoPopulation){
         stop()
+        state.currentGeneration = generation
+        initGeneration = generation
         genetic = genetic.clone({
             population: dinoPopulation
         })
@@ -51,7 +54,8 @@ export default function createGame(screen, generationText, aliveText, gameTicks 
     }
     function start(){
         if(!state.started){
-            _doRepopulateDinos(1)
+            _doRepopulateDinos(initGeneration)
+            initGeneration = 1
             state.started = true
         }
         state.running = true
@@ -123,7 +127,7 @@ export default function createGame(screen, generationText, aliveText, gameTicks 
     }
 
     function _doRepopulateDinos(newGeneration, bestDinos){
-        if(newGeneration > 1){
+        if(newGeneration > 1 && initGeneration == 1){
             genetic.evolve({
                 population: [...bestDinos]
             })
@@ -255,12 +259,17 @@ export default function createGame(screen, generationText, aliveText, gameTicks 
         return genetic
     }
 
+    function getGeneration(){
+        return state.currentGeneration
+    }
+
     return {
         start,
         stop,
         loadDinos,
         pause,
         nextTick,
+        getGeneration,
         aliveDinos,
         increaseSpeed,
         getGenetic,
