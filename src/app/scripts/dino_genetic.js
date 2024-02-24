@@ -3,11 +3,13 @@ import geneticAlgorithmConstructor from './lib/geneticalgorithm.js'
 // cd => cactusDistance
 // ch => cactusHeight
 // gs => gameSpeed
+// cw => cactusWidth
 // mptj => minimalPercentToJump
 export default function createDinoGenetic(initialPopulation, populationSize, callbackScore){
     function mutationFunction(phenotype){
         phenotype.cd += calculateBaseMutation()
         phenotype.ch += calculateBaseMutation()
+        phenotype.cw += calculateBaseMutation()
         phenotype.gs += calculateBaseMutation()
         // phenotype.mptj += 5 * calculateBaseMutation()
         return phenotype
@@ -21,8 +23,8 @@ export default function createDinoGenetic(initialPopulation, populationSize, cal
         const x = cloneJSON(a)
         const y = cloneJSON(b)
         let aux
-        // Math.floor(Math.random() * 4)
-        switch(Math.floor(Math.random() * 3)){
+        // Math.floor(Math.random() * 5)
+        switch(Math.floor(Math.random() * 4)){
             case 0:
                 aux = x.cd
                 x.cd = y.cd
@@ -38,7 +40,12 @@ export default function createDinoGenetic(initialPopulation, populationSize, cal
                 x.gs = y.gs
                 y.gs = x.gs
                 break
-            // case 3:
+            case 3:
+                aux = x.cw
+                x.cw = y.cw
+                y.cw = x.cw
+                break
+            // case 4:
             //     aux = x.mptj
             //     x.mptj = y.mptj
             //     y.mptj = x.mptj

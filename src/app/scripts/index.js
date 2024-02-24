@@ -4,8 +4,9 @@ import { downloadFile, loadFile, requestFile } from './file_manager.js'
 const canvas = document.getElementById('screen')
 const generationText = document.getElementById('generation-span')
 const aliveText = document.getElementById('alive-span')
+const scoreText = document.getElementById('score-span')
 
-const game = createGame(canvas, generationText, aliveText, 20, 50)
+const game = createGame(canvas, generationText, aliveText, scoreText, 20, 50)
 
 document.getElementById("btn-start-dinos").onclick = () => {
     game.start()
@@ -53,6 +54,10 @@ document.getElementById("btn-next-tick-dinos").onclick = () => {
 
 document.getElementById("btn-increase-speed-dinos").onclick = () => {
     game.increaseSpeed(2)
+}
+
+document.getElementById("btn-break-limits-dinos").onclick = () => {
+    game.breakSpeedLimits()
 }
 
 document.getElementById("btn-log-dinos").onclick = () => {

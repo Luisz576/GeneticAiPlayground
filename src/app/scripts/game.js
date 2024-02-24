@@ -6,17 +6,17 @@ import createGameRender from "./game_render.js"
 import phenotypeComparer from "./phenotype_comparer.js"
 
 const initialSpeed = 20
-const maxSpeed = 280
+const maxSpeed = 200
 const defaultPenality = 10000
 const maxCactus = 1
-const timeToUpdateSpeed = 40
-const incrementSpeedValue = 12
+const timeToUpdateSpeed = 20
+const incrementSpeedValue = 6
 const penalityReduction = 50
 const screenSize = 2400
 const dinoBaseX = 40
 const dinoSpawnDistanceRange = 150
 
-export default function createGame(screen, generationText, aliveText, gameTicks = 20, populationSize = 20){
+export default function createGame(screen, generationText, aliveText, scoreText, gameTicks = 20, populationSize = 20){
     const state = {}
     function callbackScore(phenotype){
         for(let d in state.dinosaurs){
@@ -30,7 +30,7 @@ export default function createGame(screen, generationText, aliveText, gameTicks 
 
     var genetic = createDinoGenetic(initialDinoPopulation, populationSize, callbackScore)
     _initializeGenetic()
-    const render = createGameRender(screen, generationText, aliveText)
+    const render = createGameRender(screen, generationText, aliveText, scoreText)
     var _runnerId = setInterval(updateTick, 1000/gameTicks)
     _resetState()
     var initGeneration = 1
@@ -100,7 +100,8 @@ export default function createGame(screen, generationText, aliveText, gameTicks 
             score: 0,
             penality: defaultPenality,
             dinosaurs: {},
-            cactus: {}
+            cactus: {},
+            speedLimitsBreaked: false,
         })
     }
     function setState(newState){
@@ -108,7 +109,7 @@ export default function createGame(screen, generationText, aliveText, gameTicks 
     }
 
     function updateTick(){
-        render.run(state, aliveDinos)
+        render.run(state, aliveDinos(), baseScore())
         if(state.running || allowOneMoreTick){
             allowOneMoreTick = false
             _updatePositions()
@@ -127,11 +128,13 @@ export default function createGame(screen, generationText, aliveText, gameTicks 
         let bestDinos = genetic.best()
         const running = state.running
         const started = state.started
+        const speedLimitsBreaked = state.speedLimitsBreaked
         const currentGeneration = state.currentGeneration
 
         _resetState()
         state.started = started
         state.repopulating = true
+        state.speedLimitsBreaked = speedLimitsBreaked
 
         if(!Array.isArray(bestDinos)){
             bestDinos = [bestDinos]
@@ -174,13 +177,15 @@ export default function createGame(screen, generationText, aliveText, gameTicks 
 
                 let cactusDistance
                 let cactusHeight
+                let cactusWidth
                 const fc = _getFirstCactus()
                 if(fc){
                     cactusDistance = fc.x - (dino.state.x + dino.state.body.width)
                     cactusHeight = fc.body.height * -1 // height is negative
+                    cactusWidth = fc.body.width
                 }
 
-                if(dino.itWillJump(cactusDistance, cactusHeight, state.gameSpeed)){
+                if(dino.itWillJump(cactusDistance, cactusHeight, cactusWidth, state.gameSpeed)){
                     dino.jump()
                 }
             }
@@ -228,8 +233,12 @@ export default function createGame(screen, generationText, aliveText, gameTicks 
         return false
     }
 
+    function baseScore(){
+        return state.score - state.penality
+    }
+
     function giveDinoScore(dino){
-        return state.score - state.penality - dino.state.y
+        return baseScore() - dino.state.y
     }
 
     function _tryCreateCactus(r, mr, c){
@@ -257,7 +266,7 @@ export default function createGame(screen, generationText, aliveText, gameTicks 
     }
 
     function updateGameSpeed(speed){
-        if(speed >= 0 && maxSpeed >= speed){
+        if(speed >= 0 && (state.speedLimitsBreaked || maxSpeed >= speed)){
             state.gameSpeed = speed
         }
     }
@@ -280,6 +289,10 @@ export default function createGame(screen, generationText, aliveText, gameTicks 
         return state.currentGeneration
     }
 
+    function breakSpeedLimits(){
+        state.speedLimitsBreaked = true
+    }
+
     return {
         start,
         stop,
@@ -289,6 +302,7 @@ export default function createGame(screen, generationText, aliveText, gameTicks 
         getGeneration,
         aliveDinos,
         increaseSpeed,
+        breakSpeedLimits,
         getGenetic,
         state,
         _runnerId

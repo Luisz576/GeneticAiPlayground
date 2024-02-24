@@ -1,13 +1,14 @@
-export default function createGameRender(screen, generationText, aliveText){
+export default function createGameRender(screen, generationText, aliveText, scoreText){
     const context = screen.getContext('2d')
     const floorY = screen.height
 
-    function run(state, aliveDinos){
+    function run(state, aliveDinos, baseScore){
         context.fillStyle = 'white'
         context.clearRect(0, 0, screen.width, screen.height)
 
         generationText.innerText = state.currentGeneration
-        aliveText.innerText = aliveDinos()
+        aliveText.innerText = aliveDinos
+        scoreText.innerText = baseScore
 
         for(let c in state.cactus){
             _cactusRender(state.cactus[c])

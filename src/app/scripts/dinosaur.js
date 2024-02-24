@@ -19,13 +19,14 @@ export default function createDinosaur(id, x, opacity, phenotype){
         body: Object.assign({}, defaultDinoSize)
     }
     
-    function itWillJump(cactusDistance, cactusHeight, gameSpeed){
+    function itWillJump(cactusDistance, cactusHeight, cactusWidth, gameSpeed){
         if(phenotype){
             // cd => cactusDistance
             // ch => cactusHeight
+            // cw => cactusWidth
             // gs => gameSpeed
             // mptj => minimalPercentToJump
-            return phenotype.cd * cactusDistance + phenotype.ch * cactusHeight + phenotype.gs * gameSpeed  > 0//< phenotype.mptj
+            return phenotype.cd * cactusDistance + phenotype.ch * cactusHeight + phenotype.cw * cactusWidth + phenotype.gs * gameSpeed  > 0//< phenotype.mptj
         }
         return false
     }

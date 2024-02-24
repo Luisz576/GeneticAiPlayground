@@ -10,6 +10,7 @@ function createDefault(){
     return {
         cd: Math.random() * 5 * (Math.floor(Math.random() * 2) == 1 ? 1 : -1),
         ch: Math.random() * 5 * (Math.floor(Math.random() * 2) == 1 ? 1 : -1),
+        cw: Math.random() * 5 * (Math.floor(Math.random() * 2) == 1 ? 1 : -1),
         gs: Math.random() * 5 * (Math.floor(Math.random() * 2) == 1 ? 1 : -1),
         // mptj: Math.random() * 100,
     }
