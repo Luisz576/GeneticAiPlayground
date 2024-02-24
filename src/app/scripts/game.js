@@ -6,7 +6,7 @@ import createGameRender from "./game_render.js"
 import phenotypeComparer from "./phenotype_comparer.js"
 
 const initialSpeed = 20
-const maxSpeed = 200
+const maxSpeed = 90
 const defaultPenality = 10000
 const maxCactus = 1
 const timeToUpdateSpeed = 20
@@ -16,7 +16,7 @@ const screenSize = 2400
 const dinoBaseX = 40
 const dinoSpawnDistanceRange = 150
 
-export default function createGame(screen, generationText, aliveText, scoreText, speedLimitsBreakedText, gameTicks = 20, populationSize = 20){
+export default function createGame(screen, generationText, aliveText, scoreText, speedLimitsBreakedText, speedText, gameTicks = 20, populationSize = 20){
     const state = {}
     function callbackScore(phenotype){
         for(let d in state.dinosaurs){
@@ -30,7 +30,7 @@ export default function createGame(screen, generationText, aliveText, scoreText,
 
     var genetic = createDinoGenetic(initialDinoPopulation, populationSize, callbackScore)
     _initializeGenetic()
-    const render = createGameRender(screen, generationText, aliveText, scoreText, speedLimitsBreakedText)
+    const render = createGameRender(screen, generationText, aliveText, scoreText, speedLimitsBreakedText, speedText)
     var _runnerId = setInterval(updateTick, 1000/gameTicks)
     _resetState()
     var initGeneration = 1

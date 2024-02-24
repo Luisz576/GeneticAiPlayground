@@ -5,9 +5,10 @@ const canvas = document.getElementById('screen')
 const generationText = document.getElementById('generation-span')
 const aliveText = document.getElementById('alive-span')
 const scoreText = document.getElementById('score-span')
+const speedText = document.getElementById('speed-span')
 const speedLimitsBreakedText = document.getElementById('speed-limit-breaked-span')
 
-const game = createGame(canvas, generationText, aliveText, scoreText, speedLimitsBreakedText, 20, 50)
+const game = createGame(canvas, generationText, aliveText, scoreText, speedLimitsBreakedText, speedText, 20, 50)
 
 document.getElementById("btn-start-dinos").onclick = () => {
     game.start()
