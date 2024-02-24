@@ -69,6 +69,9 @@ export default function createGame(screen, generationText, aliveText, scoreText,
         genetic = genetic.clone({
             population: dinoPopulation
         })
+        if(dinoPopulation.length < genetic.config().populationSize){
+            genetic.evolve()
+        }
     }
 
     function stop(){

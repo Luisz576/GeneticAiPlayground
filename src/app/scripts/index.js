@@ -36,12 +36,7 @@ document.getElementById("btn-load-dinos").onclick = () => {
                 && data['generation'] != undefined
                 && data['dinos'] != undefined
                 && Array.isArray(data['dinos'])){
-                if(game.getGenetic().config().populationSize == data['dinos'].length){
                     game.loadDinos(data['generation'], data['dinos'])
-                }else{
-                    alert("game.populationSize != dinos.size")
-                    console.error("game.populationSize != dinos.size")
-                }
             }else{
                 alert("Invalid data!")
                 console.error("Invalid data!")
