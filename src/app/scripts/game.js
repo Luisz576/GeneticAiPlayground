@@ -15,6 +15,8 @@ const penalityReduction = 150
 const screenSize = 2400
 const dinoBaseX = 40
 const dinoSpawnDistanceRange = 150
+const dinoElite = 3
+const dinoMutationPercent = 0.2
 
 export default function createGame(screen, generationText, aliveText, scoreText, speedLimitsBreakedText, speedText, gameTicks = 20, populationSize = 20){
     const state = {}
@@ -28,7 +30,7 @@ export default function createGame(screen, generationText, aliveText, scoreText,
         return -defaultPenality
     }
 
-    var genetic = createDinoGenetic(initialDinoPopulation, populationSize, callbackScore)
+    var genetic = createDinoGenetic(initialDinoPopulation, populationSize, callbackScore, dinoElite, dinoMutationPercent)
     _initializeGenetic()
     const render = createGameRender(screen, generationText, aliveText, scoreText, speedLimitsBreakedText, speedText)
     var _runnerId = setInterval(updateTick, 1000/gameTicks)
@@ -45,7 +47,7 @@ export default function createGame(screen, generationText, aliveText, scoreText,
         for(let d in state.dinosaurs){
             state.dinosaurs[d].kill()
         }
-        genetic = createDinoGenetic(initialDinoPopulation, populationSize, callbackScore)
+        genetic = createDinoGenetic(initialDinoPopulation, populationSize, callbackScore, dinoElite, dinoMutationPercent)
         let eCounter = 0
         function _evolve(){
             if(eCounter > 20){
@@ -134,7 +136,8 @@ export default function createGame(screen, generationText, aliveText, scoreText,
 
     function _repopulateDinos(){
         state.repopulating = true
-        let bestDinos = genetic.best()
+        console.log(genetic.elitePhenotypes())
+        let bestDinos = genetic.elitePhenotypes()
         const running = state.running
         const started = state.started
         const speedLimitsBreaked = state.speedLimitsBreaked

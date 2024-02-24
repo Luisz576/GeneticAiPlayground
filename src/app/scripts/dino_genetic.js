@@ -1,11 +1,11 @@
-import geneticAlgorithmConstructor from './lib/geneticalgorithm.js'
+import createGenetic from './lib/genetic.js'
 
 // cd => cactusDistance
 // ch => cactusHeight
 // gs => gameSpeed
 // cw => cactusWidth
 // mptj => minimalPercentToJump
-export default function createDinoGenetic(initialPopulation, populationSize, callbackScore){
+export default function createDinoGenetic(initialPopulation, populationSize, callbackScore, elite, mutationPercent){
     function mutationFunction(phenotype){
         phenotype.cd += calculateBaseMutation()
         phenotype.ch += calculateBaseMutation()
@@ -73,11 +73,13 @@ export default function createDinoGenetic(initialPopulation, populationSize, cal
         return aScore - bScore
     }
 
-    const g = geneticAlgorithmConstructor({
+    const g = createGenetic({
         mutationFunction: mutationFunction,
         crossoverFunction: crossoverFunction,
         fitnessFunction: fitnessFunction,
         doesABeatBFunction: doesABeatBFunction,
+        elite: elite,
+        mutationPercent: mutationPercent,
         population: initialPopulation,
         populationSize: populationSize
     });
