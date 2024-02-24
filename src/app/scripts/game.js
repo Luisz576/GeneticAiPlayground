@@ -103,6 +103,7 @@ export default function createGame(screen, generationText, aliveText, scoreText,
             started: false,
             repopulating: false,
             score: 0,
+            speedLimit: maxSpeed,
             penality: defaultPenality,
             dinosaurs: {},
             cactus: {},
@@ -134,12 +135,14 @@ export default function createGame(screen, generationText, aliveText, scoreText,
         const running = state.running
         const started = state.started
         const speedLimitsBreaked = state.speedLimitsBreaked
+        const speedLimit = state.speedLimit
         const currentGeneration = state.currentGeneration
 
         _resetState()
         state.started = started
         state.repopulating = true
         state.speedLimitsBreaked = speedLimitsBreaked
+        state.speedLimit = speedLimit
 
         if(!Array.isArray(bestDinos)){
             bestDinos = [bestDinos]
@@ -271,7 +274,7 @@ export default function createGame(screen, generationText, aliveText, scoreText,
     }
 
     function updateGameSpeed(speed){
-        if(speed >= 0 && (state.speedLimitsBreaked || maxSpeed >= speed)){
+        if(speed >= 0 && (state.speedLimitsBreaked || state.speedLimit >= speed)){
             state.gameSpeed = speed
         }
     }
@@ -298,6 +301,10 @@ export default function createGame(screen, generationText, aliveText, scoreText,
         state.speedLimitsBreaked = !state.speedLimitsBreaked
     }
 
+    function changeSpeedLimit(speedLimit){
+        state.speedLimit = speedLimit
+    }
+
     return {
         start,
         stop,
@@ -307,6 +314,7 @@ export default function createGame(screen, generationText, aliveText, scoreText,
         getGeneration,
         aliveDinos,
         increaseSpeed,
+        changeSpeedLimit,
         breakSpeedLimits,
         getGenetic,
         changeGameTick,

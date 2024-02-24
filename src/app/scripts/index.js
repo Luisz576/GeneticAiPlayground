@@ -55,7 +55,11 @@ document.getElementById("btn-next-tick-dinos").onclick = () => {
 }
 
 document.getElementById("btn-increase-speed-dinos").onclick = () => {
-    game.increaseSpeed(2)
+    game.increaseSpeed(1)
+}
+
+document.getElementById("btn-deincrease-speed-dinos").onclick = () => {
+    game.increaseSpeed(-1)
 }
 
 document.getElementById("btn-break-limits-dinos").onclick = () => {
@@ -73,10 +77,23 @@ document.getElementById("btn-ticks-dinos").onclick = () => {
             if(ticks <= 1000){
                 game.changeGameTick(ticks)
             }else{
-                throw "ticks need to be less than 1000!"
+                throw "ticks needs to be less than 1000!"
             }
         }else{
-            throw "ticks need to be more than 0!"
+            throw "ticks needs to be more than 0!"
+        }
+    }catch(e){
+        console.error(e)
+    }
+}
+
+document.getElementById("btn-set-speed-limit-dinos").onclick = () => {
+    try{
+        const speedLimit = Number(document.getElementById("speed-limit-value").value)
+        if(speedLimit > 0){
+            game.changeSpeedLimit(speedLimit)
+        }else{
+            throw "SpeedLimit needs to be more than 0!"
         }
     }catch(e){
         console.error(e)

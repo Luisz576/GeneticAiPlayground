@@ -25,12 +25,13 @@
                         <p>Alive: <span id="alive-span"></span></p>
                         <p>Score: <span id="score-span"></span></p>
                         <p>Speed: <span id="speed-span"></span></p>
-                        <p>Speed Limit: <span id="speed-limit-breaked-span"></span></p>
+                        <p>Speed Limit Status: <span id="speed-limit-breaked-span"></span></p>
                     </div>
                     <div>
                         <h3>Game Functions</h3>
                         <p><button id="btn-next-tick-dinos">Next Tick</button></p>
                         <p><button id="btn-increase-speed-dinos">IncreaseSpeed</button></p>
+                        <p><button id="btn-deincrease-speed-dinos">DecreaseSpeed</button></p>
                         <p><button id="btn-break-limits-dinos">Break Limits</button></p>
                     </div>
                     <div>
@@ -45,6 +46,7 @@
                     <div>
                         <h3>Game Configuration</h3>
                         <p><input id="ticks-value" value="20" type="number" max="1000" min="1"/><button id="btn-ticks-dinos">Change Ticks</button></p>
+                        <p><input id="speed-limit-value" value="90" type="number" max="1000" min="1"/><button id="btn-set-speed-limit-dinos">Change Speed Limit</button></p>
                     </div>
                 </div>
             </div>

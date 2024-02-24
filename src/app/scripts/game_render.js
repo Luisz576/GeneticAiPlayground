@@ -10,7 +10,7 @@ export default function createGameRender(screen, generationText, aliveText, scor
         aliveText.innerText = aliveDinos
         scoreText.innerText = baseScore
         speedLimitsBreakedText.innerText = state.speedLimitsBreaked ? "Breaked" : "Limited"
-        speedText.innerText = state.gameSpeed
+        speedText.innerText = `${state.gameSpeed} / ${state.speedLimitsBreaked ? "Infinito" : state.speedLimit}`
 
         for(let c in state.cactus){
             _cactusRender(state.cactus[c])
