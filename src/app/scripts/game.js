@@ -16,7 +16,7 @@ const screenSize = 2400
 const dinoBaseX = 40
 const dinoSpawnDistanceRange = 150
 
-export default function createGame(screen, generationText, aliveText, scoreText, gameTicks = 20, populationSize = 20){
+export default function createGame(screen, generationText, aliveText, scoreText, speedLimitsBreakedText, gameTicks = 20, populationSize = 20){
     const state = {}
     function callbackScore(phenotype){
         for(let d in state.dinosaurs){
@@ -30,7 +30,7 @@ export default function createGame(screen, generationText, aliveText, scoreText,
 
     var genetic = createDinoGenetic(initialDinoPopulation, populationSize, callbackScore)
     _initializeGenetic()
-    const render = createGameRender(screen, generationText, aliveText, scoreText)
+    const render = createGameRender(screen, generationText, aliveText, scoreText, speedLimitsBreakedText)
     var _runnerId = setInterval(updateTick, 1000/gameTicks)
     _resetState()
     var initGeneration = 1

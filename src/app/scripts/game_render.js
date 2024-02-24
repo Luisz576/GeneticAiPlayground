@@ -1,4 +1,4 @@
-export default function createGameRender(screen, generationText, aliveText, scoreText){
+export default function createGameRender(screen, generationText, aliveText, scoreText, speedLimitsBreakedText){
     const context = screen.getContext('2d')
     const floorY = screen.height
 
@@ -9,6 +9,7 @@ export default function createGameRender(screen, generationText, aliveText, scor
         generationText.innerText = state.currentGeneration
         aliveText.innerText = aliveDinos
         scoreText.innerText = baseScore
+        speedLimitsBreakedText.innerText = state.speedLimitsBreaked ? "Breaked" : "Limited"
 
         for(let c in state.cactus){
             _cactusRender(state.cactus[c])
