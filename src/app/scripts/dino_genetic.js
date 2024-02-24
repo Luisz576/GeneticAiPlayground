@@ -9,7 +9,7 @@ export default function createDinoGenetic(initialPopulation, populationSize, cal
         phenotype.cd += calculateBaseMutation()
         phenotype.ch += calculateBaseMutation()
         phenotype.gs += calculateBaseMutation()
-        phenotype.mptj += 5 * calculateBaseMutation()
+        // phenotype.mptj += 5 * calculateBaseMutation()
         return phenotype
     }
 
@@ -21,7 +21,8 @@ export default function createDinoGenetic(initialPopulation, populationSize, cal
         const x = cloneJSON(a)
         const y = cloneJSON(b)
         let aux
-        switch(Math.floor(Math.random() * 4)){
+        // Math.floor(Math.random() * 4)
+        switch(Math.floor(Math.random() * 3)){
             case 0:
                 aux = x.cd
                 x.cd = y.cd
@@ -37,11 +38,11 @@ export default function createDinoGenetic(initialPopulation, populationSize, cal
                 x.gs = y.gs
                 y.gs = x.gs
                 break
-            case 3:
-                aux = x.mptj
-                x.mptj = y.mptj
-                y.mptj = x.mptj
-                break
+            // case 3:
+            //     aux = x.mptj
+            //     x.mptj = y.mptj
+            //     y.mptj = x.mptj
+            //     break
         }
         return Math.random() < .5 ? [x,y] : [y,x];
     }

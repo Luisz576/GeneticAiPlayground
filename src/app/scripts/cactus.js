@@ -1,24 +1,24 @@
 const cactusSize = [
     {
-        width: 75,
-        height: -120
+        width: 90,
+        height: -180,
+        sprite: ""
     },
     {
-        width: 75,
-        height: -180
+        width: 270,
+        height: -180,
+        sprite: ""
     },
     {
-        width: 75,
-        height: -210
+        width: 90,
+        height: -260,
+        sprite: ""
     },
     {
-        width: 75,
-        height: -260
-    },
-    {
-        width: 75,
-        height: -300
-    },
+        width: 270,
+        height: -260,
+        sprite: ""
+    }
 ]
 
 export default function createCactus(initialPosition, type = 0){
@@ -35,7 +35,7 @@ export default function createCactus(initialPosition, type = 0){
     function canKill(x, y, width, height){
         const distanceCD = this.x - (x + width)
         // TODO: ajustar formula
-        if(distanceCD <= 0 && distanceCD >= -width){
+        if(distanceCD <= 0 && distanceCD >= -this.body.width){
             if(y >= this.body.height){
                 return true
             }

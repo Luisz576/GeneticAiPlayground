@@ -6,11 +6,11 @@ import createGameRender from "./game_render.js"
 import phenotypeComparer from "./phenotype_comparer.js"
 
 const initialSpeed = 20
-const maxSpeed = 250
+const maxSpeed = 280
 const defaultPenality = 10000
 const maxCactus = 1
 const timeToUpdateSpeed = 40
-const incrementSpeedValue = 10
+const incrementSpeedValue = 12
 const penalityReduction = 50
 const screenSize = 2400
 const dinoBaseX = 40
@@ -36,6 +36,9 @@ export default function createGame(screen, generationText, aliveText, gameTicks 
     var initGeneration = 1
 
     function _initializeGenetic(){
+        for(let d in state.dinosaurs){
+            state.dinosaurs[d].kill()
+        }
         genetic = createDinoGenetic(initialDinoPopulation, populationSize, callbackScore)
         let eCounter = 0
         function _evolve(){
@@ -112,7 +115,7 @@ export default function createGame(screen, generationText, aliveText, gameTicks 
             state.score++
             _shouldUpdateGameSpeedTick()
             if(Object.keys(state.cactus).length < maxCactus){
-                _tryCreateCactus(90, 80, 0)
+                _tryCreateCactus(8, 3, 0)
             }
             _needDestroyCactus()
             _updateDinos()
@@ -174,7 +177,7 @@ export default function createGame(screen, generationText, aliveText, gameTicks 
                 const fc = _getFirstCactus()
                 if(fc){
                     cactusDistance = fc.x - (dino.state.x + dino.state.body.width)
-                    cactusHeight = fc.body.height
+                    cactusHeight = fc.body.height * -1 // height is negative
                 }
 
                 if(dino.itWillJump(cactusDistance, cactusHeight, state.gameSpeed)){
@@ -202,7 +205,7 @@ export default function createGame(screen, generationText, aliveText, gameTicks 
         var toDelete = []
         for(let c in state.cactus){
             const cactus = state.cactus[c]
-            if(cactus.x < -10){
+            if(cactus.x < -cactus.body.width){
                 toDelete.push(cactus.id)
             }
         }
