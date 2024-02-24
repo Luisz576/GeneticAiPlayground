@@ -25,12 +25,20 @@ export default function createGenetic(options = defaultSettings()){
         settings.crossoverFunction = settings.crossoverFunction || defaults.crossoverFunction
         settings.fitnessFunction = settings.fitnessFunction || defaults.fitnessFunction
         settings.doesABeatBFunction = settings.doesABeatBFunction || defaults.doesABeatBFunction
-        settings.mutationPercent = settings.mutationPercent || defaults.mutationPercent
+
         settings.elite = settings.elite || defaults.elite
+        if(settings.elite <= 0){
+            throw Error("'elite' must be grater than 0")
+        }
+
+        settings.mutationPercent = settings.mutationPercent || defaults.mutationPercent
+        if(settings.mutationPercent < 0){
+            throw Error("'mutationPercent' can't be negative")
+        }
+
         settings.population = settings.population || defaults.population
-        
         if (settings.population.length <= 0)
-            throw Error("'population' is empty! It needs start with at least 1 phenotype!")
+            throw Error("'population' must start with at least 1 phenotype")
 
         settings.populationSize = settings.populationSize || defaults.populationSize
         if (settings.populationSize <= 0)
