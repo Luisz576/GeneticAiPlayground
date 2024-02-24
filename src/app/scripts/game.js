@@ -136,7 +136,6 @@ export default function createGame(screen, generationText, aliveText, scoreText,
 
     function _repopulateDinos(){
         state.repopulating = true
-        console.log(genetic.elitePhenotypes())
         let bestDinos = genetic.elitePhenotypes()
         const running = state.running
         const started = state.started
