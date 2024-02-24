@@ -9,8 +9,8 @@ const initialSpeed = 20
 const maxSpeed = 250
 const defaultPenality = 10000
 const maxCactus = 1
-const timeToUpdateSpeed = 35
-const incrementSpeedValue = 6
+const timeToUpdateSpeed = 40
+const incrementSpeedValue = 10
 const penalityReduction = 50
 const screenSize = 2400
 const dinoBaseX = 40
@@ -29,11 +29,29 @@ export default function createGame(screen, generationText, aliveText, gameTicks 
     }
 
     var genetic = createDinoGenetic(initialDinoPopulation, populationSize, callbackScore)
-    genetic.evolve()
+    _initializeGenetic()
     const render = createGameRender(screen, generationText, aliveText)
     var _runnerId = setInterval(updateTick, 1000/gameTicks)
     _resetState()
     var initGeneration = 1
+
+    function _initializeGenetic(){
+        genetic = createDinoGenetic(initialDinoPopulation, populationSize, callbackScore)
+        let eCounter = 0
+        function _evolve(){
+            if(eCounter > 20){
+                throw "Couldn't evolute!"
+            }
+            try{
+                genetic.evolve()
+            }catch(e){
+                eCounter++
+                console.error('Error number ' + eCounter, e)
+                _evolve()
+            }
+        } 
+        _evolve()
+    }
 
     function loadDinos(generation, dinoPopulation){
         stop()
@@ -46,10 +64,7 @@ export default function createGame(screen, generationText, aliveText, gameTicks 
     }
 
     function stop(){
-        genetic = genetic.clone({
-            population: initialDinoPopulation
-        })
-        genetic.evolve()
+        _initializeGenetic()
         _resetState()
     }
     function start(){
@@ -204,7 +219,6 @@ export default function createGame(screen, generationText, aliveText, gameTicks 
         if(fc != undefined){
             if(fc.canKill(dino.state.x, dino.state.y, dino.state.body.width, dino.state.body.height)){
                 dino.kill(giveDinoScore(dino))
-                console.error(callbackScore(dino.state.phenotype))
                 return true
             }
         }

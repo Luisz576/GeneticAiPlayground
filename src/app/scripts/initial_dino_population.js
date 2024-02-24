@@ -7,7 +7,7 @@ function createDefault(){
         cd: Math.random() * 5,
         ch: Math.random() * 5,
         gs: Math.random() * 5,
-        mptj: Math.random() * 1000,
+        mptj: Math.random() * 100,
     }
 }
 

@@ -5,12 +5,20 @@ const cactusSize = [
     },
     {
         width: 75,
+        height: -180
+    },
+    {
+        width: 75,
         height: -210
     },
     {
         width: 75,
+        height: -260
+    },
+    {
+        width: 75,
         height: -300
-    }
+    },
 ]
 
 export default function createCactus(initialPosition, type = 0){
@@ -28,8 +36,7 @@ export default function createCactus(initialPosition, type = 0){
         const distanceCD = this.x - (x + width)
         // TODO: ajustar formula
         if(distanceCD <= 0 && distanceCD >= -width){
-            const targetFoot = (y + height)
-            if(targetFoot >= this.body.height){
+            if(y >= this.body.height){
                 return true
             }
         }

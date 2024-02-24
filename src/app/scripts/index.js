@@ -54,3 +54,7 @@ document.getElementById("btn-next-tick-dinos").onclick = () => {
 document.getElementById("btn-increase-speed-dinos").onclick = () => {
     game.increaseSpeed(2)
 }
+
+document.getElementById("btn-log-dinos").onclick = () => {
+    console.log(game.state.dinosaurs)
+}

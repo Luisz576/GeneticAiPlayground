@@ -5,6 +5,10 @@
 .dev-tools{
     margin-left: 20px;
     padding: 0px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 10px;
+    row-gap: 0px;
 }
 
 #screen {
