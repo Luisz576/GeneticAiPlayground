@@ -1,4 +1,4 @@
-import createGenetic from './lib/genetic.js'
+import createGenetic from '../../lib/genetic.js'
 
 // cd => cactusDistance
 // ch => cactusHeight

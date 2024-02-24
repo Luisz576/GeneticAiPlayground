@@ -11,6 +11,8 @@ const server = http.createServer(app)
 
 app.use(cors())
 
-app.use('/', express.static(path.join(__dirname, '/src/app/')))
+app.use('/dino', express.static(path.join(__dirname, '/src/dino/')))
+app.use('/pong', express.static(path.join(__dirname, '/src/pong/')))
+app.use('/lib', express.static(path.join(__dirname, '/src/lib/')))
 
 server.listen(port)
