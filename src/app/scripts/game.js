@@ -10,7 +10,7 @@ const maxSpeed = 90
 const defaultPenality = 10000
 const maxCactus = 1
 const timeToUpdateSpeed = 20
-const incrementSpeedValue = 6
+const incrementSpeedValue = 5
 const penalityReduction = 50
 const screenSize = 2400
 const dinoBaseX = 40
@@ -34,6 +34,12 @@ export default function createGame(screen, generationText, aliveText, scoreText,
     var _runnerId = setInterval(updateTick, 1000/gameTicks)
     _resetState()
     var initGeneration = 1
+
+    function changeGameTick(newGameTicks){
+        clearInterval(_runnerId)
+        _runnerId = setInterval(updateTick, 1000/newGameTicks)
+        console.log("New Game Ticks: " + newGameTicks)
+    }
 
     function _initializeGenetic(){
         for(let d in state.dinosaurs){
@@ -63,7 +69,6 @@ export default function createGame(screen, generationText, aliveText, scoreText,
         genetic = genetic.clone({
             population: dinoPopulation
         })
-        genetic.evolve()
     }
 
     function stop(){
@@ -290,7 +295,7 @@ export default function createGame(screen, generationText, aliveText, scoreText,
     }
 
     function breakSpeedLimits(){
-        state.speedLimitsBreaked = true
+        state.speedLimitsBreaked = !state.speedLimitsBreaked
     }
 
     return {
@@ -304,6 +309,7 @@ export default function createGame(screen, generationText, aliveText, scoreText,
         increaseSpeed,
         breakSpeedLimits,
         getGenetic,
+        changeGameTick,
         state,
         _runnerId
     }

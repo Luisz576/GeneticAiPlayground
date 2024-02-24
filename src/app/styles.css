@@ -11,6 +11,10 @@
     row-gap: 0px;
 }
 
+input{
+    margin: 0;
+}
+
 #screen {
     border: 10px solid #CCC;
     /* image-rendering: pixelated;

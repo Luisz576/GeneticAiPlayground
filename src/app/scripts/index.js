@@ -65,3 +65,20 @@ document.getElementById("btn-break-limits-dinos").onclick = () => {
 document.getElementById("btn-log-dinos").onclick = () => {
     console.log(game.state.dinosaurs)
 }
+
+document.getElementById("btn-ticks-dinos").onclick = () => {
+    try{
+        const ticks = Number(document.getElementById("ticks-value").value)
+        if(ticks > 0){
+            if(ticks <= 1000){
+                game.changeGameTick(ticks)
+            }else{
+                throw "ticks need to be less than 1000!"
+            }
+        }else{
+            throw "ticks need to be more than 0!"
+        }
+    }catch(e){
+        console.error(e)
+    }
+}
