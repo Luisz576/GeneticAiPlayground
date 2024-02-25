@@ -14,9 +14,9 @@ const incrementSpeedValue = 5
 const penalityReduction = 150
 const screenSize = 2400
 const dinoBaseX = 40
-const dinoSpawnDistanceRange = 150
-const dinoElite = 3
-const dinoMutationPercent = 0.2
+const dinoSpawnDistanceRange = 250
+const dinoElite = 2
+const dinoMutationPercent = 0.4
 
 export default function createGame(screen, generationText, aliveText, scoreText, speedLimitsBreakedText, speedText, gameTicks = 20, populationSize = 20){
     const state = {}

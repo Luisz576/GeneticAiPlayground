@@ -28,12 +28,14 @@ export default function createGameRender(screen, generationText, aliveText, scor
     }
 
     function _dinoRender(dino){
-        context.fillStyle = getColor(dino.state.opacity)
-        context.fillRect(dino.state.x, floorY + dino.state.y, dino.state.body.width, dino.state.body.height)
+        // context.fillStyle = getColor(dino.state.opacity)
+        // context.fillRect(dino.state.x, floorY + dino.state.y, dino.state.body.width, dino.state.body.height)
+        context.globalAlpha = dino.state.opacity
+        context.drawImage(dino.state.skin, dino.state.x, floorY + dino.state.y, dino.state.body.width, dino.state.body.height)
+        context.globalAlpha = 1
     }
 
     function getColor(value){
-        //value from 0 to 1
         var hue=((1-value)*120).toString(10);
         return ["hsl(",hue,",100%,50%)"].join("");
     }

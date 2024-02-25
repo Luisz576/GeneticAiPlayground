@@ -64,7 +64,7 @@ export default function createDinoGenetic(initialPopulation, populationSize, cal
         
         if(aScore > bScore){
             if(bScore > 0 && ((aScore / bScore) < 2)){
-                return Math.random() > 0.9
+                return Math.random() > 0.8
             }
             return true
         }

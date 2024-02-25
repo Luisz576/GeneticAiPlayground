@@ -5,6 +5,9 @@ const defaultDinoSize = {
 const gravitySpeed = -10
 const jumpForce = -100
 
+const skinImg = new Image()
+skinImg.src = "./images/dino.png"
+
 export default function createDinosaur(id, x, opacity, phenotype){
     const state = {
         id: id != undefined ? id : (Date.now() + Math.floor(Math.random() * 100)).toString(),
@@ -13,6 +16,7 @@ export default function createDinosaur(id, x, opacity, phenotype){
         opacity: opacity,
         y: 0,
         x: x,
+        skin: skinImg,
         alive: true,
         phenotype: phenotype,
         score: 0,
