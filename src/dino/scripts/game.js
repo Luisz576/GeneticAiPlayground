@@ -137,6 +137,9 @@ export default function createGame(screen, generationText, aliveText, scoreText,
     function _repopulateDinos(){
         state.repopulating = true
         let bestDinos = genetic.elitePhenotypes()
+        // get random
+        bestDinos.push(genetic.randomPhenotype())
+        console.log(bestDinos)
         const running = state.running
         const started = state.started
         const speedLimitsBreaked = state.speedLimitsBreaked
