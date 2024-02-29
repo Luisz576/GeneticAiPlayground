@@ -1,3 +1,5 @@
+import createSkin from "./createSkin.js"
+
 const defaultDinoSize = {
     width: 120,
     height: -180,
@@ -5,15 +7,14 @@ const defaultDinoSize = {
 const gravitySpeed = -10
 const jumpForce = -100
 
-const skinImg = new Image()
-skinImg.src = "./images/dino.png"
+const skinImg = createSkin("./images/dino.png")
 
 export default function createDinosaur(id, x, opacity, phenotype){
     const state = {
         id: id != undefined ? id : (Date.now() + Math.floor(Math.random() * 100)).toString(),
         jumping: false,
         jumpForce: 0,
-        opacity: opacity,
+        opacity: opacity < 0.15 ? 0.15 : opacity,
         y: 0,
         x: x,
         skin: skinImg,

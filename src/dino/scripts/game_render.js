@@ -23,8 +23,10 @@ export default function createGameRender(screen, generationText, aliveText, scor
     }
 
     function _cactusRender(cactus){
-        context.fillStyle = 'green'
-        context.fillRect(cactus.x, floorY, cactus.body.width, cactus.body.height)
+        // context.fillStyle = 'green'
+        // context.fillRect(cactus.x, floorY, cactus.body.width, cactus.body.height)
+        context.globalAlpha = 1
+        context.drawImage(cactus.body.skin, cactus.x, floorY, cactus.body.width, cactus.body.height)
     }
 
     function _dinoRender(dino){
