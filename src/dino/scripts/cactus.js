@@ -1,19 +1,25 @@
+import createSkin from "./createSkin.js"
+
 const cactusSize = [
     {
         width: 90,
-        height: -180
+        height: -180,
+        skin: createSkin("./images/cactus1.png")
     },
     {
         width: 270,
-        height: -180
+        height: -180,
+        skin: createSkin("./images/cactus2.png")
     },
     {
         width: 90,
-        height: -260
+        height: -260,
+        skin: createSkin("./images/cactus3.png")
     },
     {
         width: 270,
-        height: -260
+        height: -260,
+        skin: createSkin("./images/cactus4.png")
     }
 ]
 
